@@ -16,7 +16,7 @@ let handler = async (m, { conn }) => {
     };
 
     // Palabras clave para detectar comandos de búsqueda
-    const palabrasClave = ['buscador'];
+    const palabrasClave = ['descargas', 'dl'];
 
     // Obtener comandos desde help (NO command)
     const comandosBusqueda = Object.values(global.plugins).filter(
