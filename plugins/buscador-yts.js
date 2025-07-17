@@ -1,50 +1,68 @@
-import fetch from 'node-fetch';
-import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys';
+import { prepareWAMessageMedia, generateWAMessageFromContent } from '@whiskeysockets/baileys';
+import yts from 'yt-search';
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`🌪️ *Ejemplo:* ${usedPrefix + command} Bad Bunny`);
-  await m.react('🕓');
+const handler = async (m, { conn, usedPrefix, command, text }) => {
+  if (!text) throw `*🌴 Por favor, ingresa un texto para buscar en Youtube.*\n> *\`Ejemplo:\`* ${usedPrefix + command} Bing Bang`;
 
-  const apiURL = `https://dark-core-api.vercel.app/api/search/youtube?key=api&text=${encodeURIComponent(text)}`;
-  const res = await fetch(apiURL);
-  const json = await res.json();
+  const results = await yts(text);
+  const videos = results.videos.slice(0, 10);
 
-  if (!json.success || !json.results || json.results.length === 0) {
-    return m.reply('❌ No se encontraron resultados en YouTube.');
-  }
+  if (!videos.length) throw '⚠️ *No se encontraron resultados para tu búsqueda.*';
 
-  const videos = json.results.slice(0, 5); // menos para evitar límite de Baileys
+  const randomVideo = videos[Math.floor(Math.random() * videos.length)];
 
-  const sections = videos.map((video, i) => ({
-    title: video.titulo,
-    rows: [
-      {
-        title: `🎧 Descargar Audio`,
-        description: `${video.duracion} | ${video.vistas} vistas`,
-        rowId: `.ytmp3 ${video.url}`
-      },
-      {
-        title: `📹 Descargar Video`,
-        description: `Canal: ${video.canal}`,
-        rowId: `.ytmp4 ${video.url}`
-      }
-    ]
-  }));
+  const media = await prepareWAMessageMedia(
+    { image: { url: randomVideo.thumbnail } },
+    { upload: conn.waUploadToServer }
+  );
 
-  const listMessage = {
-    text: `🎵 Resultados de: *${text}*`,
-    footer: 'Selecciona una opción para continuar',
-    title: '✨ YouTube Search',
-    buttonText: '📂 Ver Resultados',
-    sections
+  const interactiveMessage = {
+    body: {
+      text: `> *Resultados:* \`${videos.length}\`\n\n*${randomVideo.title}*\n\n≡ 🌵 *\`Autor:\`* ${randomVideo.author.name}\n≡ 🍁 *\`Vistas:\`* ${randomVideo.views.toLocaleString()}\n≡ 🌿 *\`Enlace:\`* ${randomVideo.url}`
+    },
+    footer: { text: 'sᴜᴋᴜɴᴀ ʙᴏᴛ ᴍᴅ' },
+    header: {
+      title: '```乂 YOUTUBE - SEARCH```',
+      hasMediaAttachment: true,
+      imageMessage: media.imageMessage
+    },
+    nativeFlowMessage: {
+      buttons: [
+        {
+          name: 'single_select',
+          buttonParamsJson: JSON.stringify({
+            title: 'Opciones de descarga',
+            sections: videos.map(video => ({
+              title: `${video.title}`,
+              rows: [
+                {
+                  header: video.title,
+                  title: video.author.name,
+                  description: `𝖣𝖾𝗌𝖼𝖺𝗋𝗀𝖺𝗋 𝖺𝗎𝖽𝗂𝗈 | Duración: ${video.timestamp}`,
+                  id: `.ytmp3 ${video.url}`
+                },
+                {
+                  header: video.title,
+                  title: video.author.name,
+                  description: `𝖣𝖾𝗌𝖼𝖺𝗋𝗀𝖺𝗋 𝗏𝗂𝖽𝖾𝗈 | Duración: ${video.timestamp}`,
+                  id: `.ytmp4 ${video.url}`
+                }
+              ]
+            }))
+          })
+        }
+      ],
+      messageParamsJson: ''
+    }
   };
 
-  await conn.sendMessage(m.chat, listMessage, { quoted: m });
-  await m.react('✅');
+  const userJid = conn?.user?.jid || m.key.participant || m.chat;
+  const msg = generateWAMessageFromContent(m.chat, { interactiveMessage }, { userJid, quoted: m });
+  conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
 };
 
-handler.help = ['ytsearch', 'yts'];
-handler.tags = ['search'];
-handler.command = ['ytsearch', 'yts'];
+handler.help = ['yts <texto>'];
+handler.tags = ['buscador'];
+handler.command = ['yts', 'ytsearch'];
 
 export default handler;
