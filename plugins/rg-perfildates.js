@@ -1,52 +1,40 @@
 let handler = async (m, { conn, usedPrefix }) => {
-  const imageUrl = 'https://files.catbox.moe/3gxuzq.jpg';
-  const caption = `┌──〔🛰️ PROFILE NODE INTERFACE〕──┐
-│ [💾] SYSTEM: BOOTING PROFILE MODULE...
+  const imgurl = 'https://files.catbox.moe/3gxuzq.jpg';
+  const texto = `┌──〔🛰️ ᴘʀᴏғɪʟᴇ ɴᴏᴅᴇ ɪɴᴛᴇʀғᴀᴄᴇ〕──┐
+│ [🎂] ${usedPrefix}setbirth     → ᴀñᴀᴅɪʀ ᴄᴜᴍᴘʟᴇᴀñᴏs
+│ [🧨] ${usedPrefix}delbirth     → ʙᴏʀʀᴀʀ ᴄᴜᴍᴘʟᴇᴀñᴏs
+│ [📄] ${usedPrefix}setdesc      → ᴇsᴄʀɪʙɪʀ ʙɪᴏɢʀᴀғɪ́ᴀ
+│ [🔥] ${usedPrefix}deldesc      → ᴇʟɪᴍɪɴᴀʀ ʙɪᴏɢʀᴀғɪ́ᴀ
+│ [👤] ${usedPrefix}setgenre     → ᴅᴇғɪɴɪʀ ɢᴇ́ɴᴇʀᴏ
+│ [💀] ${usedPrefix}delgenre     → ʙᴏʀʀᴀʀ ɢᴇ́ɴᴇʀᴏ
+│ [💍] ${usedPrefix}marry        → ᴄᴀsᴀʀsᴇ ᴄᴏɴ ᴀʟɢᴜɪᴇɴ
+│ [☠️] ${usedPrefix}divorce      → ᴅɪᴠᴏʀᴄɪᴀʀsᴇ
 │
-│ [🎂] .setbirth    → Añadir cumpleaños
-│ [🧨] .delbirth    → Borrar cumpleaños
-│ [📄] .setdesc    → Escribir biografía
-│ [🔥] .deldesc    → Eliminar biografía
-│ [👤] .setgenre   → Definir género
-│ [💀] .delgenre   → Borrar género
-│ [💍] .marry      → Casarse con alguien
-│ [☠️] .divorce     → Divorciarse
-│
-│ 🧩 STATUS: ONLINE | AUTH: OK
+│ 🧩 STATUS: ᴏɴʟɪɴᴇ | ᴀᴜᴛʜ: ✅
 └──⟦ SΣC MODULΣ vX.1337 [ACTIVE] ⟧──┘`;
 
-  const botones = [
-    {
-      type: 1,
-      buttonId: `${usedPrefix}profile`,
-      buttonText: { displayText: '🥀 Ver Perfil' }
-    },
-    {
-      type: 1,
-      buttonId: `${usedPrefix}menu`,
-      buttonText: { displayText: '🌲 Menú Principal' }
-    }
-  ];
-
-  const contexto = {
-    forwardingScore: 1000,
-    isForwarded: true,
-    externalAdReply: {
-      title: '🌪️ Configuración de Perfil',
-      body: '⛩️ Administra tu identidad con Sukuna Bot ⛩️',
-      thumbnailUrl: imageUrl,
-      mediaType: 1,
-      renderLargerThumbnail: true
-    }
-  };
-
   await conn.sendMessage(m.chat, {
-    image: { url: icono },
-    caption,
-    footer: '🏞️ Sukuna Profile Manager',
-    buttons: botones,
-    viewOnce: true,
-    contextInfo: contexto
+    image: { url: imgurl },
+    caption: texto,
+    footer: '⛩️ Sukuna Bot MD',
+    buttons: [
+      { buttonId: '#menu', buttonText: { displayText: '📜 ᴍᴇɴᴜ' }, type: 1 },
+      { buttonId: '#perfil', buttonText: { displayText: '👤 ᴘᴇʀғɪʟ' }, type: 1 },
+    ],
+    headerType: 4,
+    contextInfo: {
+      mentionedJid: [m.sender],
+      externalAdReply: {
+        title: global.packname,
+        body: global.dev,
+        thumbnailUrl: global.icono || imgurl,
+        mediaType: 1,
+        renderLargerThumbnail: false,
+        showAdAttribution: true,
+        mediaUrl: 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U',
+        sourceUrl: 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
+      }
+    }
   }, { quoted: m });
 
   await m.react('👻');

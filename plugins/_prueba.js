@@ -38,7 +38,7 @@ let handler = async (m, { conn }) => {
 
 ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴᴅᴏs ᴅᴇ ʙᴜ́sǫᴜᴇᴅᴀ'}
 
-> ${global.dev || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ ᴄʟᴏᴠᴇʀ'}
+> ${global.dev || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ'}
 `.trim();
 
 
@@ -55,7 +55,7 @@ ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴ�
         mentionedJid: [m.sender],
         externalAdReply: {
           title: global.packname || '📦 ꜱᴜᴋᴜɴᴀ ʙᴏᴛ ᴍᴅ',
-          body: global.dev || '👑 ᴄʀᴇᴀᴅᴏ ᴘᴏʀ ʙʟᴀᴄᴋ ᴄʟᴏᴠᴇʀ',
+          body: global.dev || '👑 ᴄʀᴇᴀᴅᴏ ᴘᴏʀ ʙʟᴀᴄᴋ',
           thumbnailUrl: global.icono || imgurl,
           mediaType: 1,
           renderLargerThumbnail: false,
