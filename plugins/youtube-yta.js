@@ -1,47 +1,32 @@
 import fetch from 'node-fetch';
-import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys';
 
-const handler = async (m, { conn, text }) => {
-  if (!text) return m.reply('🎧 Ingresa el enlace de YouTube.\n*Ejemplo:* .ytmp3 https://youtu.be/TdrL3QxjyVw');
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text || !text.includes('youtu')) {
+    return conn.reply(m.chat, `❌ *Ingresa un enlace válido de YouTube.*\n\nEjemplo:\n${usedPrefix + command} https://youtu.be/ryVgEcaJhwM`, m);
+  }
 
   try {
-    await m.react('🎶');
+    let res = await fetch(`https://dark-core-api.vercel.app/api/download/YTMP3?key=api&url=${encodeURIComponent(text)}`);
+    let json = await res.json();
 
-    const api = `https://delirius-apiofc.vercel.app/download/ytmp3?url=${encodeURIComponent(text)}`;
-    const res = await fetch(api);
-    const json = await res.json();
+    if (!json.status || !json.download) {
+      return conn.reply(m.chat, '⚠️ No se pudo obtener el audio. Asegúrate que el link es válido o intenta más tarde.', m);
+    }
 
-    if (!json.estado) return m.reply('❌ No se pudo obtener el audio. Asegúrate de que el enlace sea válido.');
-
-    const data = json.datos;
-    const texto = `
-🌸 *${data.nombre}*
-🎙️ *Artistas:* ${data.artistas}
-⏱️ *Duración:* ${data.duración}
-📥 *Descarga disponible abajo*
-`.trim();
-
-    const message = {
-      image: { url: data.imagen },
-      caption: texto,
-      footer: '✨ Sukuna - Bot MD',
-      buttons: [
-        {
-          buttonId: data.descargar,
-          buttonText: { displayText: '🎧 Descargar MP3' },
-          type: 1
-        }
-      ],
-      headerType: 4
-    };
-
-    await conn.sendMessage(m.chat, message, { quoted: m });
+    await conn.sendMessage(m.chat, {
+      audio: { url: json.download },
+      fileName: `${json.title}.mp3`,
+      mimetype: 'audio/mpeg'
+    }, { quoted: m });
 
   } catch (e) {
     console.error(e);
-    m.reply('⚠️ Error al procesar la solicitud.');
+    conn.reply(m.chat, '💥 Ocurrió un error al procesar el enlace.', m);
   }
 };
 
-handler.command = ['mp3yt', 'ytmusica'];
+handler.help = ['ytmp3'];
+handler.tags = ['downloader'];
+handler.command = /^ytmp3|ytaudio$/i;
+
 export default handler;
