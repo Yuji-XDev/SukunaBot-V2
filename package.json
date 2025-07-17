@@ -1,5 +1,5 @@
 {
-  "name": "Nino-Nakano",
+  "name": "SukunaBot-V2",
   "version": "2.2.5",
   "description": "WhatsApp Bot Multi Device",
   "main": "index.js",
@@ -18,22 +18,22 @@
     "eslint": "eslint .",
     "eslintfix": "eslint --fix ."
   },
-  "homepage": "https://github.com/Angelithoxz/Nino-Nakano",
+  "homepage": "https://github.com/Yuji-XDev/SukunaBot-V2",
   "author": {
-    "name": "Angelithoxz"
+    "name": "Yuji-XDev"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Angelithoxz/Nino-Nakano.git"
+    "url": "git+https://github.com/Yuji-XDev/SukunaBot-V2.git"
   },
   "bugs": {
-    "url": "https://github.com/Angelithoxz/Nino-Nakano/issues"
+    "url": "https://github.com/Yuji-XDev/SukunaBot-V2/issues"
   },
   "license": "MIT-License",
   "dependencies": {
     "@bochilteam/scraper": "^4.2.4",
     "@vitalets/google-translate-api": "^8.0.0",
-    "@whiskeysockets/baileys": "github:nstar-y/bail",
+    "@whiskeysockets/baileys": "npm:@izumi-xyz/meta",
     "acrcloud": "^1.4.0",
     "api-dylux": "^1.7.2",
     "aptoide-scraper": "github:DIEGO-OFC/dv-aptoide-scraper",

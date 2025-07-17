@@ -1,21 +1,38 @@
-import speed from 'performance-now'
 import { exec } from 'child_process'
+import speed from 'performance-now'
 
-let handler = async (m, { conn }) => {
-  let timestamp = speed()
-  let sentMsg = await conn.reply(m.chat, '⌛⛩️ *Calculando ping... espera un momento, nya~*', m)
-  let latency = speed() - timestamp
+let handler = async (m, { conn, participants }) => {
+  let start = speed()
+  let latency = (speed() - start).toFixed(3)
 
-  exec('neofetch --stdout', (error, stdout, stderr) => {
-    let child = stdout.toString('utf-8')
-    let ssd = child.replace(/Memory:/, 'Ram:')
+  exec('neofetch --stdout', (_, stdout) => {
+    let sys = stdout?.toString('utf-8').replace(/Memory:/g, 'Ram:') || ''
+    let info = sys.split('\n').map(line => `┃ ${line}`).join('\n')
 
-    let result = `🍥 *Nyaa~ Pong!* 🩵✨\n` +
-                 `🌸 *Velocidad:* ⏱️ ${latency.toFixed(4).split(".")[0]}ms\n\n` +
-                 `💻 *Detalles del sistema:*\n\`\`\`${ssd}\`\`\`\n` +
-                 `— 𖧷 Botcito by Nino Nakano 💖`
+    let text = `
+╭─⭑✔️︎・*SUKUNA BOT MODE*・,🎄⭑─╮
+┃ 🧬 *Sistema activo:*  
+┃ ⚡ *Latencia:* ${latency} ms
+┃ 🛠️ *Detalles técnicos:*
+${info}
+╰━━━━━━━━━━━━━━━━━━━━⬣`.trim()
 
-    conn.sendMessage(m.chat, { text: result, edit: sentMsg.key }, { quoted: m })
+    conn.sendMessage(m.chat, {
+      text,
+      mentions: participants?.map(p => p.id) || [],
+      contextInfo: {
+        mentionedJid: participants?.map(p => p.id) || [],
+        externalAdReply: {
+          title: packname,
+          body: dev,
+          thumbnailUrl: logo,
+          mediaType: 1,
+          showAdAttribution: true,
+          renderLargerThumbnail: true,
+          sourceUrl: 'https://github.com/the-27/Rin-Itoshi-Bot-V2'
+        }
+      }
+    }, { quoted: m })
   })
 }
 

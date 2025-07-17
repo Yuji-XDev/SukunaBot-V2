@@ -1,71 +1,56 @@
 import axios from 'axios';
-const {
-  generateWAMessageContent,
-  generateWAMessageFromContent,
-  proto
-} = (await import("@whiskeysockets/baileys"))["default"];
+import { prepareWAMessageMedia } from '@whiskeysockets/baileys';
 
-let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    return conn.reply(m.chat, `💗 *¿Y qué se supone que voy a buscar sin que me digas nada...?*  
-Escribe algo para que busque en Pinterest, tonto~ 😤`, m);
-  }
-
-  let query = text + " hd";
-  await m.react("🔎");
-  conn.reply(m.chat, `🌸 *Buscando tus imágenes súper cute~*  
-No te emociones tanto, baka~ 💅`, m);
+let handler = async (m, { conn, text }) => {
+  if (!text) return m.reply(`💥 Por favor, ingresa lo que deseas buscar por Pinterest.`);
 
   try {
-    let { data } = await axios.get(`https://api.dorratz.com/v2/pinterest?q=${encodeURIComponent(query)}`);
-    let images = data.slice(0, 6).map(item => item.image_large_url);
-    let cards = [];
-    let counter = 1;
+    await m.react('🕒');
 
-    for (let url of images) {
-      const { imageMessage } = await generateWAMessageContent({ image: { url } }, { upload: conn.waUploadToServer });
-      cards.push({
-        body: proto.Message.InteractiveMessage.Body.fromObject({ text: `🌺 Imagen ${counter++}` }),
-        footer: proto.Message.InteractiveMessage.Footer.fromObject({ text: "🌟 Encontrado por Nino Bot" }),
-        header: proto.Message.InteractiveMessage.Header.fromObject({ title: '', hasMediaAttachment: true, imageMessage }),
-        nativeFlowMessage: proto.Message.InteractiveMessage.NativeFlowMessage.fromObject({
-          buttons: [{
-            name: "cta_url",
-            buttonParamsJson: JSON.stringify({
-              display_text: "✨ Ver en Pinterest",
-              Url: `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`,
-              merchant_url: `https://www.pinterest.com/search/pins/?q=${encodeURIComponent(query)}`
-            })
-          }]
-        })
-      });
+    let results = await pins(text);
+    if (!results.length) return conn.reply(m.chat, `✧ No se encontraron resultados para "${text}".`, m);
+
+    let caption = `❀  Pinterest  -  Search  ❀\n\n✧ Búsqueda » "${text}"\n✐ Resultados » ${results.length}\n\n© Sukuna Bot MD`;
+
+    // Solo mandamos las primeras 5 imágenes
+    for (let i = 0; i < Math.min(5, results.length); i++) {
+      let img = results[i].hd;
+
+      await conn.sendMessage(m.chat, {
+        image: { url: img },
+        caption,
+        mentions: [m.sender]
+      }, { quoted: m });
     }
 
-    const messageContent = generateWAMessageFromContent(m.chat, {
-      viewOnceMessage: {
-        message: {
-          messageContextInfo: { deviceListMetadata: {}, deviceListMetadataVersion: 2 },
-          interactiveMessage: proto.Message.InteractiveMessage.fromObject({
-            body: proto.Message.InteractiveMessage.Body.create({ text: `📎 *Resultado de búsqueda para:* ${query}` }),
-            footer: proto.Message.InteractiveMessage.Footer.create({ text: "🖼️ 𝙄𝙢𝙖𝙜𝙚𝙣𝙚𝙨 𝙘𝙤𝙣 𝙖𝙢𝙤𝙧 💖 𝙙𝙚 Nino-Nakano-Bot" }),
-            header: proto.Message.InteractiveMessage.Header.create({ hasMediaAttachment: false }),
-            carouselMessage: proto.Message.InteractiveMessage.CarouselMessage.fromObject({ cards })
-          })
-        }
-      }
-    }, { quoted: m });
+    await conn.sendMessage(m.chat, { react: { text: '✅', key: m.key } });
 
-    await m.react("✅");
-    await conn.relayMessage(m.chat, messageContent.message, { messageId: messageContent.key.id });
   } catch (error) {
     console.error(error);
-    return conn.reply(m.chat, `😿 *Algo salió mal...*  
-No encontré nada o el universo está contra mí hoy~`, m);
+    conn.reply(m.chat, `⚠︎ Error:\n\n${error.message}`, m);
   }
 };
 
-handler.help = ["pinterest"];
-handler.tags = ["descargas"];
+handler.help = ['pinterest'];
 handler.command = ['pinterest', 'pin'];
+handler.tags = ['dl'];
 
 export default handler;
+
+const pins = async (query) => {
+  try {
+    const { data } = await axios.get(`https://delirius-apiofc.vercel.app/search/pinterest?text=${encodeURIComponent(query)}`);
+
+    if (data?.status && data?.data?.length) {
+      return data.data.map(item => ({
+        hd: item.hd,
+        mini: item.mini
+      }));
+    }
+
+    return [];
+  } catch (error) {
+    console.error("Error al obtener imágenes de Pinterest:", error);
+    return [];
+  }
+};

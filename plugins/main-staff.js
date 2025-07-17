@@ -1,35 +1,30 @@
 let handler = async (m, { conn, command, usedPrefix }) => {
 let img = './src/catalogo.jpg'
-let staff = `ᥫ᭡ *EQUIPO DE AYUDANTES* ❀
-✰ *Dueño* ${creador}
-✦ *Bot:* ${botname}
-⚘ *Versión:* ${vs}
-❖ *Libreria:* ${libreria} ${baileys}
+let staff = ` ︵ٜ⊹۬︵߭ꥈ‌⏜ׄ︵‌୨ ꥇ⭐߭ ୧‌︵۬߭⏜ꥇ‌︵⊹︵
+       ꥇ𝐄ٜ۬߭𝐐ׄꥇ‌𝐔ᨘ࣪𝐈ꥈ𝐏࣭߭𝐎..𝐃𝐄..𝐀𝐘𝐔𝐃𝐀𝐍𝐓𝐄𝐒.il
+⏝۬‌ꥇ︶ꥇ⊹۬︶‌⏝۬︶ᨘ⊹߭︶ׅꥇ⏝߭︶۬⊹ꥈ︶⏝
+       ⬪ 🏜️ (*SUKUNA BOT MD*) 
 
-❍ *Creador:*
+━━━━━━━━━━━━━━━━━━
+🧑‍💼 *Dueño:* ${creador}
+🤖 *Bot:* ${botname}
+📦 *Versión:* ${vs}
+📚 *Librería:* ${libreria} (${baileys})
+━━━━━━━━━━━━━━━━━━
 
-ᰔᩚ Dev.Angel.Xyz.Li
-> 🜸 Rol » *Creador*
-> ✧ GitHub » https://github.com/Angelithoxz
+🧠 *Creador Principal*
+╭─➤
+│ ⚽ *Nombre:* ${etiqueta}𖣘
+│ 🎈 *Rol:* Developer
+│ 🔗 *Número:* wa.me/qr/5B6AGA5YNOUZI1
+│ 🧬 *GitHub:* https://github.com/Yuji-XDev
+╰───────────────
 
-❒ *Colaboradores:*
-
-ᰔᩚ Barboza
-> 🜸 Rol » *Developer*
-> ✧ GitHub » https://github.com/Elrebelde1
-
-ᰔᩚ Niño Piña
-> 🜸 Rol » *Developer*
-> ✧ GitHub » https://github.com/WillZek
-
-✧ Izumi
-> 🜸 Rol » *Developer*
-> ✧ GitHub » https://github.com/Izumi-kzx
-
-✧ Neo Tokio
-> 🜸 Rol » *Developer*
-> ✧ GitHub » https://github.com/TOKIO5025`
-await conn.sendFile(m.chat, img, 'nino.jpg', staff.trim(), m)
+👥 *Colaboradores*
+╭─➤
+│ 🚫 Actualmente no hay colaboradores
+╰───────────────`
+await conn.sendFile(m.chat, img, 'staff.jpg', staff.trim(), fkontak)
 }
   
 handler.help = ['staff']

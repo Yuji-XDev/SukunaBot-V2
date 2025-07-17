@@ -27,17 +27,17 @@ return res.data
 console.log(`Error : ${e}`)
 }}
   
-global.creador = 'wa.me/51901930696'
+global.creador = 'wa.me/51969214380'
 global.ofcbot = `${conn.user.jid.split('@')[0]}`
-global.namechannel = '=͟͟͞❀ 𝐍𝐢𝐧𝐨 𝐍𝐚𝐤𝐚𝐧𝐨 - 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⏤͟͟͞͞★'
-global.namechannel2 = '=͟͟͞❀ 𝐃𝐞𝐯 𝐀𝐧𝐠𝐞𝐥 - 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⏤͟͟͞͞★'
-global.namegrupo = 'ᰔᩚ 𝐧𝐢𝐧𝐨 𝐧𝐚𝐤𝐚𝐧𝐨 • ᥆𝖿іᥴіᥲᥣ ❀'
-global.namecomu = 'ᰔᩚ 𝐥𝐨𝐥𝐢 𝐜𝐥𝐮𝐛 • ᥴ᥆mᥙᥒі𝗍ᥡ ❀'
-global.listo = '❀ *Aquí tienes ฅ^•ﻌ•^ฅ*'
-global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://raw.githubusercontent.com/The-King-Destroy/Adiciones/main/Contenido/1745522645448.jpeg')
+global.namechannel = '=͟͟͞Sukuna bot • 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⌺'
+global.namechannel2 = '=͟͟͞Sukuna bot • 𝐂𝐡𝐚𝐧𝐧𝐞𝐥 ⌺'
+global.namegrupo = '=͟͟͞Sukuna bot • 𝒐𝒇𝒊𝒄𝒊𝒂𝒍 ⌺'
+global.namecomu = '=͟͟͞Sukuna bot • 𝑪𝒐𝒎𝒖𝒏𝒊𝒕𝒚 ˟꘏꙳'
+global.listo = '*🌴 ＡＱＵＩ - ＴＩＥＮＥＳ ＭＥＮ*'
+global.fotoperfil = await conn.profilePictureUrl(m.sender, 'image').catch(_ => 'https://files.catbox.moe/vm6opf.jpg')
 
-global.canalIdM = ["120363374826926142@newsletter", "120363338297109389@newsletter"]
-global.canalNombreM = ["ᰔᩚ 𝐍𝐢𝐧𝐨 𝐍𝐚𝐤𝐚𝐧𝐨 𝐎𝐟𝐢𝐜𝐢𝐚𝐥 𝐂𝐡𝐚𝐧𝐧𝐞𝐥❀", "ᰔᩚ 𝐃𝐞𝐯 𝐀𝐧𝐠𝐞𝐥"]
+global.canalIdM = ["120363401008003732@newsletter", "120363401008003732@newsletter"]
+global.canalNombreM = ["  ꙰⃟🎄  ⸸𝕊𝖚𝖐𝖚𝖓𝖆 𝕭𝖔𝖙 𝑴𝑫⸸  🎋★꙰⃟⸙", "🐉꙰⃟ 𖠺 SUKUNA BOT - 𝐌𝐃 𖠺🌴⃟ᰳᰬᰶ"]
 global.channelRD = await getRandomChannel()
 
 global.d = new Date(new Date + 3600000)
@@ -53,24 +53,25 @@ global.done = '✅'
 global.error = '✖️'
 global.msm = '⚠︎'
 
-global.emoji = '❀'
-global.emoji2 = '✧'
-global.emoji3 = '✦'
-global.emoji4 = '❍'
-global.emoji5 = '✰'
-global.emojis = [emoji, emoji2, emoji3, emoji4].getRandom()
+global.emoji = '🌴'
+global.emoji2 = '(◍•ᴗ•◍)'
+global.emoji3 = '(✿^‿^)'
+global.emoji4 = '(๑>ᴗ๑'
+global.emoji5 = '(◕‿◕✦'
+global.emojis = [emoji, emoji2, emoji3, emoji4, emoji5].getRandom()
 
-global.wait = '❍ Espera un momento, soy lenta...';
-global.waitt = '❍ Espera un momento, soy lenta...';
-global.waittt = '❍ Espera un momento, soy lenta...';
-global.waitttt = '❍ Espera un momento, soy lenta...';
+global.wait = '⚘𖠵⃕ＣＡＲＧＡＮＤＯ...ꪾ❍̵̤̂\n=͟͟͞⚡ 𝐴𝑔𝑢𝑎𝑟𝑑𝑒 𝑢𝑛 𝑚𝑜𝑚𝑒𝑛𝑡𝑜...';
+global.waitt = '⚘𖠵⃕ＣＡＲＧＡＮＤＯ...ꪾ❍̵̤̂\n=͟͟͞⚡ 𝐴𝑔𝑢𝑎𝑟𝑑𝑒 𝑢𝑛 𝑚𝑜𝑚𝑒𝑛𝑡𝑜...';
+global.waittt = '⚘𖠵⃕ＣＡＲＧＡＮＤＯ...ꪾ❍̵̤̂\n=͟͟͞⚡ 𝐴𝑔𝑢𝑎𝑟𝑑𝑒 𝑢𝑛 𝑚𝑜𝑚𝑒𝑛𝑡𝑜...';
+global.waitttt = '⚘𖠵⃕ＣＡＲＧＡＮＤＯ...ꪾ❍̵̤̂\n=͟͟͞⚡ 𝐴𝑔𝑢𝑎𝑟𝑑𝑒 𝑢𝑛 𝑚𝑜𝑚𝑒𝑛𝑡𝑜...';
 
-var canal = 'https://whatsapp.com/channel/0029VapUpsT9mrGcypZy141s'  
-var comunidad = 'https://chat.whatsapp.com/HeKcGyv2idq0tMFRFGN6qL?mode=ac_t'
-var web = 'https://github.com/The-King-Destroy'
-var web2 = 'https://github.com/The-King-Destroy/Yuki_Suou-Bot' 
-let web3 = 'thekingdestroy507@gmail.com'
-global.redes = [canal, comunidad, web, web2, web3].getRandom()
+var canal = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'  
+var comunidad = 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
+var git = 'https://github.com/Yuji-XDev'
+var github = 'https://github.com/Yuji-XDev/Sukuna-Bot-MD'
+var tiktok = 'https://tiktok.com/@the.black.xz'
+let correo = 'blackoficial2025@gmail.com'
+global.redes = [canal, comunidad, git, github, tiktok, correo].getRandom()
 
 let category = "imagen"
 const db = './src/database/db.json'
@@ -89,8 +90,8 @@ global.taguser = '@' + m.sender.split("@s.whatsapp.net")
 var more = String.fromCharCode(8206)
 global.readMore = more.repeat(850)
 
-global.packsticker = `°.⎯⃘̶⎯̸⎯ܴ⎯̶᳞͇ࠝ⎯⃘̶⎯̸⎯ܴ⎯̶᳞͇ࠝ⎯⃘̶⎯̸.°\nᰔᩚ Usuario: ${nombre}\n❀ Bot: ${botname}\n✦ Fecha: ${fecha}\nⴵ Hora: ${tiempo}`;
-global.packsticker2 = `\n°.⎯⃘̶⎯̸⎯ܴ⎯̶᳞͇ࠝ⎯⃘̶⎯̸⎯ܴ⎯̶᳞͇ࠝ⎯⃘̶⎯̸.°\n\n${dev}`
+global.packsticker = `🧙‍♂️ 𝗠𝗮𝗴𝗼: ${nombre}\n🕋 𝗘𝘀𝗽𝗶𝗿𝗶𝘁𝘂: ${bot}`;
+global.packsticker2 = `\n 𑁯ᰰᘘ᷒ᰰ ༝⃟ꪆ 𝙂𝘼𝙔 𝙎𝙄 𝙇𝙊 𝙍𝙊𝘽𝘼𝙎 ༝⃟ꪆ ᘘ᷒ᰰ𑁯`
   
 global.fkontak = { key: {participant: `0@s.whatsapp.net`, ...(m.chat ? { remoteJid: `6285600793871-1614953337@g.us` } : {}) }, message: { 'contactMessage': { 'displayName': `${nombre}`, 'vcard': `BEGIN:VCARD\nVERSION:3.0\nN:XL;${nombre},;;;\nFN:${nombre},\nitem1.TEL;waid=${m.sender.split('@')[0]}:${m.sender.split('@')[0]}\nitem1.X-ABLabel:Ponsel\nEND:VCARD`, 'jpegThumbnail': null, thumbnail: null,sendEphemeral: true}}}
 
@@ -98,7 +99,11 @@ global.fake = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo
 }}, { quoted: m }
 
 global.icono = [
-'https://qu.ax/zzrcJ.jpg',
+'https://files.catbox.moe/nmseef.png',
+'https://files.catbox.moe/4oyfem.jpg',
+'https://files.catbox.moe/bs0ecf.png',
+'https://files.catbox.moe/jp0yqi.png',
+'https://files.catbox.moe/qnvpyq.jpg'
 ].getRandom()
 
 global.rcanal = { contextInfo: { isForwarded: true, forwardedNewsletterMessageInfo: { newsletterJid: channelRD.id, serverMessageId: 100, newsletterName: channelRD.name, }, externalAdReply: { showAdAttribution: true, title: packname, body: dev, mediaUrl: null, description: null, previewType: "PHOTO", thumbnailUrl: icono, sourceUrl: redes, mediaType: 1, renderLargerThumbnail: false }, }, }}
