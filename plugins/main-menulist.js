@@ -1,59 +1,46 @@
 import fetch from 'node-fetch';
 
 const handler = async (m, { conn, usedPrefix }) => {
-  await m.react('🌪️');
+  await m.react('📦');
 
   try {
-    const _muptime = process.uptime() * 1000;
-    const muptime = clockString(_muptime);
-
+    const uptime = clockString(process.uptime() * 1000);
     const hora = new Date().toLocaleTimeString('es-PE', { timeZone: 'America/Lima' });
-    
     const fechaObj = new Date();
     const fecha = fechaObj.toLocaleDateString('es-PE', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'America/Lima' });
     const dia = fechaObj.toLocaleDateString('es-PE', { weekday: 'long', timeZone: 'America/Lima' });
 
-    const totalreg = Object.keys(global.db.data.users).length;
-    const totalCommands = Object.values(global.plugins).filter((v) => v.help && v.tags).length;
+    const totalUsers = Object.keys(global.db.data.users).length;
+    const totalCommands = Object.values(global.plugins).filter(p => p.help && p.tags).length;
+    const user = global.db.data.users[m.sender];
 
-    const texto = `╭̇╌̣╌̇╌̣━̇━̣╴╴╴╴╴╴╴╴╴╴̣━̇━̣╌̇╌̣╌̇╮
-│👤╴╴╴❨ᴜ❩.s.ᴇ.ʀ╴╴╴╴╴╴╴𐃙
-╰─⃜┈⃨𖨠̇⁕໑̣٨ִــִׁﮩ♡̫𝐇̣𑜰̣𝐥𑜅 ᴜ꯭ᴡ꯭ᴜ♡ִ̫ﮩ٨ﮩׅ᪤̇⁕⃨┈⃛⟡
-𓍯   ─   ◦   ─   ◦   ─   ◦   ─   ◦   ─   ◦ 𓏲੭
-        ͟ꤪꤨ ͞ 𝙈𝙚𝙣𝙪 𝙇𝙞𝙨𝙩 ͞  ͟ ꤪꤨ
-╭┈ ↷ 𝐈𝐍𝐅𝐎 𝐁𝐎𝐓
-• ✐; Cʀᴇᴀᴅᴏʀ » Dev.Shadow 🇦🇱
-├┈・──・──・﹕₊˚ ✦・୨୧・
-│ *👨💻 ᴄʀᴇᴀᴅᴏʀ:* [ wa.link/z1w9sq ]
-│ *🔖 ᴠᴇʀsɪóɴ:* [ 2.2.0 ]
-│ *👥 ᴜsᴜᴀʀɪᴏs:* [ ${totalreg} ]
-│ *🖍️ ᴄᴏᴍᴀɴᴅᴏs:* [ ${totalCommands} ]
-│ *🍫 ᴘʀᴇғɪᴊᴏ:* [ ${usedPrefix} ]
-│ *📚 ʟɪʙʀᴇʀɪᴀ:* [ Baileys ]
-│ *🛡️ ᴍᴏᴅᴏ:* [ Privado ]
-│ *⏱️ ᴛɪᴇᴍᴘᴏ ᴀᴄᴛɪᴠᴏ:* [ ${muptime} ]
-│ ✦ Info » System 🅢
-╰────────────────•°•
+    const texto = `┏━━━━━━⬣
+┃ ⌬ 𝗜𝗡𝗙𝗢 𝗗𝗘𝗟 𝗕𝗢𝗧 📟
+┃ 🧠 Creador: *Dev.Shadow*
+┃ 🔗 Contacto: wa.link/z1w9sq
+┃ 📁 Versión: 2.2.5
+┃ 👥 Usuarios: ${totalUsers}
+┃ 📦 Comandos: ${totalCommands}
+┃ ⚙️ Modo: Privado
+┃ 📚 Librería: Baileys
+┃ 🕰️ Activo: ${uptime}
+┗━━━━━━⬣
 
-╭┈ ↷
-│ ✐ ꒷ꕤ👻 \`ɪɴғᴏ - ᴜsᴇʀ\` ☄︎
-├┈・──・──・﹕₊˚ ✦・୨୧・
-│ *🧬 ɪᴅ:* [ ${conn.getName(m.sender)} ]
-│ *💰 ᴍᴏɴᴇᴅᴀ:* [ ${global.db.data.users[m.sender]?.coin || 0} ]
-│ *📊 ɴɪᴠᴇʟ:* [ ${global.db.data.users[m.sender]?.level || 0} ]
-│ *⚡ xᴘ ᴛᴏᴛᴀʟ:* [ ${global.db.data.users[m.sender]?.exp || 0} ]
-│ *👑 ʀᴏʟ:* [ ${global.db.data.users[m.sender]?.role || '𝙎𝙞𝙣 𝙍𝙖𝙣𝙜𝙤'} ] 
-│ ✦ Info » User 🅘
-╰────────────────•°•
+┏━━━━━━⬣
+┃ ⌬ 𝗧𝗨 𝗣𝗘𝗥𝗙𝗜𝗟 👤
+┃ 🧬 ID: ${conn.getName(m.sender)}
+┃ 💰 Moneda: ${user.coin || 0}
+┃ 📊 Nivel: ${user.level || 0}
+┃ ⚡ Exp: ${user.exp || 0}
+┃ 👑 Rango: ${user.role || 'Sin Rango'}
+┗━━━━━━⬣
 
-╭┈ ↷
-│ ✐ ꒷ꕤ🍄ദ \`ɪɴғᴏ - ғᴇᴄʜᴀ\`  ☄
-├┈・──・──・﹕₊˚ ✦・୨୧・
-│ *🕒 ʜᴏʀᴀ:* ${hora}
-│ *📅 ғᴇᴄʜᴀ:* ${fecha}
-│ *🗓️ ᴅíᴀ:* ${dia}
-│ ✦ Info » Time 🅣
-╰────────────────•°•°
+┏━━━━━━⬣
+┃ ⌬ 𝗙𝗘𝗖𝗛𝗔 & 𝗛𝗢𝗥𝗔 🕒
+┃ 🗓️ Fecha: ${fecha}
+┃ 📅 Día: ${dia}
+┃ ⏰ Hora: ${hora}
+┗━━━━━━⬣
 
 ⌬━━━━━━━━━━━━━━━━━━━━⌬‎‎‎‎‎‎‎‎‎‎‎‎‎‎‎
 
@@ -73,10 +60,10 @@ const handler = async (m, { conn, usedPrefix }) => {
 │•ꪶᳱꫂ \`#ᴍᴇɴᴜʀᴘɢ\`
 │•ꪶᳱꫂ \`#ᴍᴇɴᴜsᴛɪᴄᴋᴇʀ\`
 ╰╌┈─━╌─━╌⃨╼⃛⬥⬥⃛╾⃨╌━─╌━─┈╌╯
-`;
+`.trim();
 
-    const imagen = 'https://files.catbox.moe/35wxsf.jpg';
-    const imgBuffer = await (await fetch(imagen)).buffer();
+    const image = 'https://files.catbox.moe/35wxsf.jpg';
+    const buffer = await (await fetch(image)).buffer();
 
     const buttons = [
       { buttonId: `${usedPrefix}creador`, buttonText: { displayText: '✐ ꒷📞ദ ᴄʀᴇᴀᴅᴏʀ' }, type: 1 },
@@ -103,8 +90,8 @@ const handler = async (m, { conn, usedPrefix }) => {
     ];
 
     await conn.sendMessage(m.chat, {
-      image: imgBuffer,
-      caption: texto.trim(),
+      image: buffer,
+      caption: texto,
       footer: '⌬ Sistema Operativo: *SUᴋᴜɴᴀ.ᴇxᴇ*',
       buttons: [
         ...buttons,
@@ -131,7 +118,7 @@ const handler = async (m, { conn, usedPrefix }) => {
   } catch (e) {
     console.error(e);
     await m.react('❌');
-    await conn.reply(m.chat, '*❌ Error al mostrar el menú.*\n' + e.message, m);
+    await conn.reply(m.chat, `❌ *Error al mostrar el menú.*\n${e.message}`, m);
   }
 };
 
@@ -142,8 +129,8 @@ handler.command = ['menulist'];
 export default handler;
 
 function clockString(ms) {
-  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000)
-  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60
-  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60
-  return [h, m, s].map(v => v.toString().padStart(2, 0)).join(':')
+  let h = isNaN(ms) ? '--' : Math.floor(ms / 3600000);
+  let m = isNaN(ms) ? '--' : Math.floor(ms / 60000) % 60;
+  let s = isNaN(ms) ? '--' : Math.floor(ms / 1000) % 60;
+  return [h, m, s].map(v => v.toString().padStart(2, '0')).join(':');
 }
