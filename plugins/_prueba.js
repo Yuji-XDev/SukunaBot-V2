@@ -1,31 +1,38 @@
-let handler = async (m, { conn, commands }) => {
+let handler = async (m, { conn }) => {
   try {
-    const imgurl = 'https://files.catbox.moe/nmseef.png';
-    const keywords = ['search', 'buscar', 'finder']; // palabras clave para filtrar comandos
+    let imgurl = 'https://files.catbox.moe/nmseef.png';
 
-    // Filtrar comandos por tags relacionados con búsqueda
-    let busquedas = Object.values(commands).filter(
-      (cmd) =>
-        cmd?.tags?.some(tag => keywords.some(k => tag.toLowerCase().includes(k))) ||
-        keywords.some(k => cmd?.command?.toString()?.toLowerCase()?.includes(k))
+    // Palabras clave para detectar comandos de búsqueda
+    const palabrasClave = ['search', 'buscar', 'find'];
+
+    // Obtener comandos del bot desde global.plugins
+    const comandosBusqueda = Object.values(global.plugins).filter(
+      plugin => plugin?.command && (
+        palabrasClave.some(palabra => (plugin?.tags || []).join().toLowerCase().includes(palabra)) ||
+        palabrasClave.some(palabra => plugin?.help?.join(' ')?.toLowerCase().includes(palabra)) ||
+        palabrasClave.some(palabra => Array.isArray(plugin.command) 
+          ? plugin.command.some(c => typeof c === 'string' && c.includes(palabra)) 
+          : typeof plugin.command === 'string' && plugin.command.includes(palabra))
+      )
     );
 
-    // Eliminar comandos duplicados o inválidos
-    busquedas = [...new Set(busquedas)].filter(v => v?.command);
+    // Generar lista de comandos
+    let listaComandos = comandosBusqueda.map(plugin => {
+      const cmds = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
+      return cmds.map(cmd => `യ ׄ🌲˚ #${cmd}`).join('\n');
+    }).join('\n');
 
-    // Construir el texto del menú
+    // Plantilla del menú
     const texto = `ʜᴏʟᴀ
 ╔═══════ • ° ❁⊕❁ ° • ═══════╗
     💥⃢᭄͜═✩═[𝐌𝐄𝐍𝐔-𝐒𝐄𝐀𝐑𝐂𝐇]═✩═⃟⃢᭄͜🔎
 ╚═══════ • ° ❁⊕❁ ° • ═══════╝
 
 > 🔍⊹ *𝐂𝐨𝐦𝐚𝐧𝐝𝐨𝐬 𝐝𝐞 𝐁𝐮́s𝐪𝐮𝐞𝐝𝐚* ⊹🔎
-${busquedas.map((v) => {
-  const cmd = Array.isArray(v.command) ? v.command[0] : v.command;
-  return `യ ׄ🌲˚ *${typeof cmd === 'string' && !cmd.startsWith('.') ? `#${cmd}` : cmd}*`;
-}).join('\n')}
 
-> ${global.dev || '👑 Desarrollado por Black Clover'}
+${listaComandos || '❌ No se encontraron comandos de búsqueda'}
+
+> ${global.dev || '👑 Bot creado por Black Clover'}
 `.trim();
 
     await conn.sendMessage(m.chat, {
@@ -34,8 +41,8 @@ ${busquedas.map((v) => {
       contextInfo: {
         mentionedJid: [m.sender],
         externalAdReply: {
-          title: global.packname || '🤖 Menú de Búsqueda',
-          body: global.dev || 'Bot creado por Black Clover',
+          title: global.packname || '📦 Sukuna Bot MD',
+          body: global.dev || '👑 Black Clover',
           thumbnailUrl: global.icono || imgurl,
           mediaType: 1,
           renderLargerThumbnail: false,
@@ -46,9 +53,9 @@ ${busquedas.map((v) => {
       }
     }, { quoted: m });
 
-  } catch (e) {
-    console.error(e);
-    conn.reply(m.chat, '⚠️ Hubo un error al generar el menú.', m);
+  } catch (err) {
+    console.error(err);
+    conn.reply(m.chat, '❌ Hubo un error al generar el menú dinámico.', m);
   }
 };
 
