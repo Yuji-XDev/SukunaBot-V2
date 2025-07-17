@@ -2,7 +2,6 @@ let handler = async (m, { conn }) => {
   try {
     const imgurl = 'https://files.catbox.moe/nmseef.png';
 
-    // Función para convertir texto a estilo aesthetic (unicode small caps)
     const toAesthetic = (text) => {
       const map = {
         a: 'ᴀ', b: 'ʙ', c: 'ᴄ', d: 'ᴅ', e: 'ᴇ', f: 'ғ', g: 'ɢ', h: 'ʜ',
@@ -14,11 +13,9 @@ let handler = async (m, { conn }) => {
       };
       return text.toLowerCase().split('').map(c => map[c] || c).join('');
     };
+    const palabrasClave = ['search', 'buscador'];
 
-    // Palabras clave para detectar comandos de búsqueda
-    const palabrasClave = ['descargas', 'dl'];
 
-    // Obtener comandos desde help (NO command)
     const comandosBusqueda = Object.values(global.plugins).filter(
       plugin => plugin?.help && plugin.help.length > 0 &&
         (palabrasClave.some(palabra =>
@@ -27,12 +24,11 @@ let handler = async (m, { conn }) => {
         ))
     );
 
-    // Generar lista de comandos en estilo aesthetic
     const listaComandos = comandosBusqueda.map(plugin => {
       return plugin.help.map(cmd => `യ ׄ🌲˚ #${toAesthetic(cmd)}`).join('\n');
     }).join('\n');
 
-    // Plantilla del menú
+ 
     const texto = `ʜᴏʟᴀ
 ╔═══════ • ° ❁⊕❁ ° • ═══════╗
     💥⃢᭄͜═✩═[𝐌𝐄𝐍𝐔-𝐒𝐄𝐀𝐑𝐂𝐇]═✩═⃟⃢᭄͜🔎
@@ -45,9 +41,16 @@ ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴ�
 > ${global.dev || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ ᴄʟᴏᴠᴇʀ'}
 `.trim();
 
+
     await conn.sendMessage(m.chat, {
       image: { url: imgurl },
       caption: texto,
+      footer: '⛩️ Sukuna Bot MD',
+      buttons: [
+        { buttonId: '#menulist', buttonText: { displayText: 'Ver Mas xD' }, type: 1 },
+        { buttonId: '#menu', buttonText: { displayText: '🏠 Menú Principal' }, type: 1 },
+      ],
+      headerType: 4,
       contextInfo: {
         mentionedJid: [m.sender],
         externalAdReply: {
@@ -65,12 +68,12 @@ ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴ�
 
   } catch (err) {
     console.error(err);
-    conn.reply(m.chat, '❌ ʜᴜʙᴏ ᴜɴ ᴇʀʀᴏʀ ᴀʟ ɢᴇɴᴇʀᴀʀ ᴇʟ ᴍᴇɴᴜ.', m);
+    conn.reply(m.chat, '❌ ʜᴜʙᴏ ᴜɴ ᴇʀʀᴏʀ ᴀʟ ᴄᴀʀɢᴀʀ ᴇʟ ᴍᴇɴᴜ.', m);
   }
 };
 
-handler.help = ['menusearch'];
+handler.help = ['prueba'];
 handler.tags = ['menus'];
-handler.command = ['menusearch', 'menuse2'];
+handler.command = ['prueba'];
 
 export default handler;
