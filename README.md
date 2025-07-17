@@ -63,7 +63,7 @@ termux-setup-storage
 ```
 
 ```bash
-git clone https://github.com/Yuji-XDev/Sukuna-Bot-MD && cd Sukuna-Bot-MD
+git clone https://github.com/Yuji-XDev/SukunaBot-V2 && cd SukunaBot-V2
 ```
 
 ```bash
@@ -83,7 +83,7 @@ npm start
 ❒ Abre Termux y navega al directorio del bot:
    
 ```bash
-cd Sukuna-Bot-MD
+cd SukunaBot-V2
 ```
 
 ❒ Inicia el bot nuevamente:
@@ -100,7 +100,7 @@ Si después de instalar el bot en Termux y iniciar la session del bot (el numero
 1. Abre Termux y navega al directorio del bot:
 
 ```bash
-cd Sukuna-Bot-MD
+cd SukunaBot-V2
 ```
 
 2. Elimina la carpeta MiniSession:
@@ -120,7 +120,7 @@ npm start
 > Si después de instalar el bot en Termux y iniciar la session del bot (deseas poner tu número es la lista de owner pon este comando:
 
 ```bash
-cd Sukuna-Bot-MD && nano config.js
+cd SukunaBot-V2 && nano config.js
 ```
 
 </details>
@@ -139,7 +139,7 @@ apt update && apt upgrade
 ```
 
 ```bash
-git clone https://github.com/Yuji-XDev/Sukuna-Bot-MD && cd Sukuna-Bot-MD
+git clone https://github.com/Yuji-XDev/SukunaBot-V2 && cd SukunaBot-V2
 ```
 
 ```bash
