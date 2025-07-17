@@ -47,8 +47,8 @@ ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴ�
       caption: texto,
       footer: '⛩️ Sukuna Bot MD',
       buttons: [
-        { buttonId: '#menulist', buttonText: { displayText: 'Ver Mas xD' }, type: 1 },
-        { buttonId: '#menu', buttonText: { displayText: '🏠 Menú Principal' }, type: 1 },
+        { buttonId: '#menulist', buttonText: { displayText: 'ᴍᴇɴᴜ ʟɪsᴛ' }, type: 1 },
+        { buttonId: '#perfil', buttonText: { displayText: 'ᴘᴇʀғɪʟ' }, type: 1 },
       ],
       headerType: 4,
       contextInfo: {
