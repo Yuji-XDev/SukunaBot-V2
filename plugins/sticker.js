@@ -2,29 +2,29 @@ import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
-    return conn.reply(m.chat, `✨ *Ejemplo:* ${usedPrefix + command} upmina`, m);
+    return conn.reply(m.chat, `✨ *Ejemplo:* ${usedPrefix + command} My melody`, m);
   }
 
   try {
-    let res = await fetch(`https://api.dorratz.com/v3/stickerly?query=${encodeURIComponent(text)}`);
-    let json = await res.json();
+    const res = await fetch(`https://delirius-apiofc.vercel.app/search/stickerly?query=${encodeURIComponent(text)}`);
+    const json = await res.json();
 
-    if (!json.success || !json.data || !json.data.length) {
+    if (!json.estado || !json.datos || !json.datos.length) {
       return conn.reply(m.chat, `❌ No se encontraron packs de *${text}*.`, m);
     }
 
-    let sections = [{
+    const sections = [{
       title: `🌟 Resultados de: ${text}`,
-      rows: json.data.slice(0, 10).map((pack, i) => ({
-        title: `💌 ${pack.name}`,
-        description: `👤 ${pack.author} · ${pack.stickerCount} stickers`,
+      rows: json.datos.slice(0, 10).map((pack, i) => ({
+        title: `💌 ${pack.nombre}`,
+        description: `👤 ${pack.autor} · ${pack.número_de_pegatinas} stickers`,
         rowId: `${usedPrefix}verpack ${encodeURIComponent(pack.url)}`
       }))
     }];
 
-    let listMessage = {
-      text: `✨ *Resultados para:* ${text}\n\n🔍 Se encontraron ${json.data.length} paquetes.`,
-      footer: '🌟 Stickerly Explorer by Dev.Shadow',
+    const listMessage = {
+      text: `✨ *Resultados para:* ${text}\n\n🔍 Se encontraron ${json.datos.length} paquetes.`,
+      footer: '🌟 Stickerly Explorer by @darlingg',
       title: '📦 Packs encontrados:',
       buttonText: '🔍 Ver Packs',
       sections
