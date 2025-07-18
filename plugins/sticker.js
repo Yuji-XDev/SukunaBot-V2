@@ -13,7 +13,6 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       return conn.reply(m.chat, `❌ No se encontraron packs de *${text}*.`, m);
     }
 
-    // Generar secciones para lista
     let sections = [{
       title: `🌟 Resultados de: ${text}`,
       rows: json.data.slice(0, 10).map((pack, i) => ({
