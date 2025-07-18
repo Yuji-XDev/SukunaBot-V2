@@ -24,8 +24,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     }];
 
     let listMessage = {
-      text: `✨ *Resultados para:* ${text}`,
-      footer: '🌟 Stickerly Explorer by Diego-OFC',
+      text: `✨ *Resultados para:* ${text}\n\n🔍 Se encontraron ${json.data.length} paquetes.`,
+      footer: '🌟 Stickerly Explorer by Dev.Shadow',
       title: '📦 Packs encontrados:',
       buttonText: '🔍 Ver Packs',
       sections
