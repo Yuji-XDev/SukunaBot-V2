@@ -1,47 +1,33 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) {
-    return conn.reply(m.chat, `✨ *Ejemplo:* ${usedPrefix + command} My melody`, m);
-  }
+  if (!text) return conn.reply(m.chat, `✨ *Ejemplo:* ${usedPrefix + command} My melody`, m);
+
+  await m.react('🛰️');
 
   try {
-    // Reacciona mientras busca
-    await m.react('🛰️');
-
     const res = await fetch(`https://delirius-apiofc.vercel.app/search/stickerly?query=${encodeURIComponent(text)}`);
     const json = await res.json();
+    const packs = json?.datos || [];
 
-    const resultados = json?.datos || [];
+    if (!packs.length) throw new Error('Sin resultados');
 
-    const sections = [{
-      title: `🌟 Resultados de: ${text}`,
-      rows: resultados.slice(0, 10).map((pack, i) => ({
-        title: `💌 ${pack.nombre}`,
-        description: `👤 ${pack.autor} · ${pack.número_de_pegatinas} stickers`,
-        rowId: `${usedPrefix}verpack ${pack.url}`
-      }))
-    }];
+    let resultado = `🎨 *Resultados para:* ${text}\n\n`;
 
-    const listMessage = {
-      text: `✨ *Resultados para:* ${text}`,
-      footer: '🌟 Stickerly Explorer by @darlingg',
-      title: '📦 Packs encontrados:',
-      buttonText: '🔍 Ver Packs',
-      sections
-    };
+    for (let i = 0; i < Math.min(5, packs.length); i++) {
+      let p = packs[i];
+      resultado += `*${i + 1}.* ${p.nombre}\n👤 Autor: ${p.autor}\n🔗 ${p.url}\n🧩 Stickers: ${p.número_de_pegatinas}\n\n`;
+    }
 
-    await conn.sendMessage(m.chat, listMessage, { quoted: m });
-
-    // Reacciona cuando termina
+    await conn.sendMessage(m.chat, { text: resultado.trim() }, { quoted: m });
     await m.react('✅');
 
   } catch (e) {
-    console.error('[ERROR STICKERLY]', e);
+    console.error('❌ ERROR:', e);
     await m.react('❌');
-    conn.reply(m.chat, '❌ Error al buscar los paquetes de stickers.', m);
+    return conn.reply(m.chat, '❌ No se pudieron obtener resultados. Intenta con otro nombre.', m);
   }
 };
 
-handler.command = /^(stickerly|stickerpack)$/i;
+handler.command = /^(stickerly)$/i;
 export default handler;
