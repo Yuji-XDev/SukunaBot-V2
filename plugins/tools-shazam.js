@@ -16,29 +16,43 @@ function msToTime(ms) {
   return `${m}M ${s}S`;
 }
 
-let handler = async (m, { conn, command, usedPrefix }) => {
+let handler = async (m, { conn }) => {
   let filepath;
   try {
-    let q = m.quoted ? m.quoted : m;
+    let q = m.quoted || m;
     let mime = (q.msg || q).mimetype || q.mediaType || '';
-    if (!/audio|video/.test(mime)) return conn.reply(m.chat, `🎵 Responde a un audio o video para identificar la música.`, m);
+
+    if (!/audio|video/.test(mime)) {
+      return conn.reply(m.chat, `🎵 *Responde a un audio o video para identificar la canción.*`, m);
+    }
 
     await m.react('🔍');
+
     let buffer = await q.download();
-    if (!buffer || !Buffer.isBuffer(buffer)) return conn.reply(m.chat, `❌ No se pudo descargar el archivo.`, m);
-    if (buffer.length > 5 * 1024 * 1024) return conn.reply(m.chat, `⚠️ Archivo demasiado grande. Usa uno menor a 5MB.`, m);
+    if (!buffer || !Buffer.isBuffer(buffer)) {
+      return conn.reply(m.chat, `❌ No se pudo descargar el archivo.`, m);
+    }
+
+    if (buffer.length > 5 * 1024 * 1024) {
+      return conn.reply(m.chat, `⚠️ Archivo demasiado grande. Usa uno menor a 5MB.`, m);
+    }
 
     let filename = `${randomUUID()}.mp3`;
     filepath = join(tmpdir(), filename);
     await writeFile(filepath, buffer);
 
-    let result = await acr.identify(buffer);
-    if (filepath) await unlink(filepath).catch(() => {});
+    // 👉 ESTA LÍNEA CAMBIA: se usa el filepath, no el buffer
+    let result = await acr.identify(filepath);
+    await unlink(filepath).catch(() => {});
 
-    if (result.status?.msg !== 'Success') return conn.reply(m.chat, '❌ No se detectó ninguna coincidencia.', m);
+    if (result.status?.msg !== 'Success') {
+      return conn.reply(m.chat, '❌ No se detectó ninguna coincidencia.', m);
+    }
 
     let song = result.metadata?.music?.[0];
-    if (!song) return conn.reply(m.chat, '❌ No se reconoció ninguna canción.', m);
+    if (!song) {
+      return conn.reply(m.chat, '❌ No se reconoció ninguna canción.', m);
+    }
 
     let txt = `🎧 *Canción detectada:*\n\n` +
               `• *Título:* ${song.title || 'Desconocido'}\n` +
@@ -53,13 +67,13 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     let thumb = song.album?.images?.[0]?.url;
 
     await conn.sendMessage(m.chat, {
-      image: { url: thumb || '' },
+      image: { url: thumb || logo },
       caption: txt,
     }, { quoted: m });
 
   } catch (e) {
     console.error('[❌ WHATMUSIC ERROR]:', e);
-    conn.reply(m.chat, `❌ Hubo un error al procesar el audio.`, m);
+    conn.reply(m.chat, `❌ Error al procesar el audio.`, m);
   } finally {
     if (filepath) await unlink(filepath).catch(() => {});
   }
