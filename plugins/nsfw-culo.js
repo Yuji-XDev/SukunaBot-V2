@@ -1,29 +1,35 @@
-let handler = async (m, { conn, usedPrefix, command }) => {
+import fetch from 'node-fetch';
 
-  let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
-  let text = '🍑 *Disfruta tu ración de... arte digital 🙈*';
-  let footer = 'Solicitado por ' + m.pushName;
+let handler = async(m, { conn, usedPrefix, command }) => {
 
-  let message = {
-    caption: text,
-    image: { url: img },
-    footer: footer,
-    buttons: [
-      {
-        buttonId: usedPrefix + command,
-        buttonText: { displayText: '➡️ Siguiente' },
-        type: 1
-      }
-    ],
-    headerType: 4
-  };
+m.react('🕑');
 
-  await conn.sendMessage(m.chat, message, { quoted: m });
-  m.react('✅');
-};
+const gp = global.db.data.chats[m.chat] || {};
+
+if (!gp.nsfw && m.isGroup) return m.reply('[❗] *El contenido \`NSFW\` está desactivado en este grupo.*\n> Un administrador puede activarlo con el comando » *#nsfw on*');
+
+let txt = '🍑 *Disfruta tu ración de... arte digital 🙈*';
+
+let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
+
+m.react('✅');
+conn.sendMessage(m.chat, { 
+        image: { url: img }, 
+        caption: txt, 
+        footer: dev, 
+        buttons: [
+            {
+                buttonId: '.culo',
+                buttonText: { displayText: '⏩ Siguiente' }
+            }
+        ],
+        viewOnce: true,
+        headerType: 4
+    }, { quoted: m });
+}
 
 handler.help = ['culo'];
-handler.tags = ['nsfw'];
+handler.tag = ['nsfw'];
 handler.command = ['culo'];
 
 export default handler;
