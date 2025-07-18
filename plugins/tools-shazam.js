@@ -102,12 +102,6 @@ handler.register = true;
 
 export default handler;*/
 
-no funciona no para que muestre la url de YouTube de la música utiliza import yts from 'yt-search';
-
-y para que puetre la url de Spotify de la misma música usa esta api
-
-https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(text)}
-
 
 
 import acrcloud from 'acrcloud';
