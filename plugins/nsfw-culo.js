@@ -1,30 +1,24 @@
-import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys';
-
 let handler = async (m, { conn, usedPrefix, command }) => {
 
   let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
   let text = '🍑 *Disfruta tu ración de... arte digital 🙈*';
   let footer = 'Solicitado por ' + m.pushName;
 
-  const template = generateWAMessageFromContent(m.chat, proto.Message.fromObject({
-    templateMessage: {
-      hydratedTemplate: {
-        imageMessage: { url: img },
-        hydratedContentText: text,
-        hydratedFooterText: footer,
-        hydratedButtons: [
-          {
-            quickReplyButton: {
-              displayText: '➡️ Siguiente',
-              id: usedPrefix + command
-            }
-          }
-        ]
+  let message = {
+    caption: text,
+    image: { url: img },
+    footer: footer,
+    buttons: [
+      {
+        buttonId: usedPrefix + command,
+        buttonText: { displayText: '➡️ Siguiente' },
+        type: 1
       }
-    }
-  }), { userJid: m.sender });
+    ],
+    headerType: 4
+  };
 
-  await conn.relayMessage(m.chat, template.message, { messageId: template.key.id });
+  await conn.sendMessage(m.chat, message, { quoted: m });
   m.react('✅');
 };
 
