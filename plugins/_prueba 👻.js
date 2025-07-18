@@ -2,55 +2,67 @@ import fetch from 'node-fetch';
 import { generateWAMessageFromContent, proto } from '@whiskeysockets/baileys';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return conn.reply(m.chat, `✨ *Ejemplo:* ${usedPrefix + command} upmina`, m);
+  if (!text) return m.reply(`✨ *Ejemplo:* ${usedPrefix + command} upmina`);
 
   try {
     const res = await fetch(`https://api.dorratz.com/v3/stickerly?query=${encodeURIComponent(text)}`);
     const json = await res.json();
 
-    if (!json.success || !json.data || !json.data.length) {
-      return conn.reply(m.chat, `❌ No se encontraron packs de *${text}*.`, m);
+    if (!json.success || !json.data || json.data.length === 0) {
+      return m.reply(`❌ No se encontraron resultados para *${text}*`);
     }
 
-    const resultados = json.data.slice(0, 3); // Los 3 primeros resultados
-    const imagenIntro = 'https://telegra.ph/file/62034697e1be964da1f92.jpg'; // Puedes cambiarla
+    const packs = json.data.slice(0, 3); // Primeros 3 packs
+    const imagen = logo;
 
-    const botones = resultados.map(pack => ({
+    const contentText = `🎀 *Resultados de:* ${text}\n\n` + packs.map((p, i) => 
+      `*${i + 1}.* ${p.name}\n👤 ${p.author}\n🧩 ${p.stickerCount} stickers\n👁 ${p.viewCount} vistas\n🔗 ${p.url}`
+    ).join('\n\n');
+
+    const buttons = packs.map(p => ({
+      index: 1,
       urlButton: {
-        displayText: `${pack.name} (${pack.stickerCount})`,
-        url: pack.url
+        displayText: p.name,
+        url: p.url
       }
     }));
 
-    const mensaje = {
-      templateButtons: botones,
-      image: { url: imagenIntro },
-      caption: `🎀 *Resultado de:* ${text}\n\n${resultados.map((p, i) =>
-        `*${i + 1}.* ${p.name}\n👤 ${p.author}\n🧩 ${p.stickerCount} stickers\n👁 ${p.viewCount} vistas\n🔗 ${p.url}\n`).join('\n')}`,
-      footer: '🧷 Stickerly Search by Diego-OFC'
-    };
-
-    const msg = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
-      templateMessage: {
-        hydratedTemplate: {
-          hydratedContentText: mensaje.caption,
-          locationMessage: { jpegThumbnail: await (await fetch(imagenIntro)).buffer() },
-          hydratedFooterText: mensaje.footer,
-          hydratedButtons: botones
+    const msg = generateWAMessageFromContent(m.chat, {
+      viewOnceMessage: {
+        message: {
+          messageContextInfo: {},
+          interactiveMessage: proto.Message.InteractiveMessage.create({
+            body: proto.Message.InteractiveMessage.Body.create({
+              text: contentText
+            }),
+            footer: proto.Message.InteractiveMessage.Footer.create({
+              text: '🧷 Stickerly Search by Diego-OFC'
+            }),
+            header: proto.Message.InteractiveMessage.Header.create({
+              title: `✨ Packs encontrados`,
+              hasMediaAttachment: true,
+              image: {
+                url: imagen
+              }
+            }),
+            nativeFlowMessage: {
+              buttons
+            }
+          })
         }
       }
-    }), { quoted: m });
+    }, { quoted: m });
 
     await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
 
   } catch (e) {
     console.error(e);
-    conn.reply(m.chat, '❌ Ocurrió un error al buscar los stickers.', m);
+    m.reply('❌ Error al buscar los stickers.');
   }
 };
 
-handler.help = ['stickerly <nombre>'];
+handler.command = /^(stickerly|stickerpack)$/i;
 handler.tags = ['sticker'];
-handler.command = /^(stickerly|stickerpack|stickerlysearch)$/i;
+handler.help = ['stickerly <nombre>'];
 
 export default handler;
