@@ -1,24 +1,15 @@
-import fetch from 'node-fetch';
+let handler = async(m, { conn }) => {
 
-let handler = async (m, { conn }) => {
-  try {
-    const res = await fetch('https://dark-core-api.vercel.app/api/random/ass?key=api');
-    const json = await res.json();
+let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
 
-    if (json?.url) {
-      await conn.sendMessage(m.chat, {
-        image: { url: json.url },
-        caption: `🍑 *Disfruta tu ración de... arte digital 🙈*`
-      }, { quoted: m });
-    }
+let text = '🍑 *Disfruta tu ración de... arte digital 🙈*';
 
-  } catch (e) {
-    console.error('[ERROR ASS]', e);
-  }
-};
+conn.sendMessage(m.chat, { image: { url: img }, caption: text }, { quoted: m });
+m.react('✅');
+}
 
-handler.command = /^culo$/i;
-handler.tags = ['nsfw'];
 handler.help = ['culo'];
+handler.tags = ['nsfw'];
+handler.command = ['culo'];
 
 export default handler;
