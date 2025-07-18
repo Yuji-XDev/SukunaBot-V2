@@ -64,7 +64,7 @@ const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮
         {
           title: `🎶 Descargar Audio`,
           description: `Duración: ${s.duracion || 'No disponible'}`,
-          id: `${usedPrefix}spotify ${s.url}`
+          id: `${usedPrefix}music ${s.url}`
         }
       ]
     }));
