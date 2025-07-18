@@ -7,25 +7,30 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
   try {
     const res = await fetch(`https://delirius-apiofc.vercel.app/search/stickerly?query=${encodeURIComponent(text)}`);
+
+    // Asegura que la respuesta tenga contenido
+    if (!res.ok) throw new Error(`Código HTTP: ${res.status}`);
+
     const json = await res.json();
-    const packs = json?.datos || [];
 
-    if (!packs.length) throw new Error('Sin resultados');
+    // Asegura que 'datos' existe y es un array
+    const packs = Array.isArray(json.datos) ? json.datos : [];
 
-    let resultado = `🎨 *Resultados para:* ${text}\n\n`;
+    if (!packs.length) throw new Error('API vacía o sin resultados');
 
+    let msg = `🎨 *Resultados para:* ${text}\n\n`;
     for (let i = 0; i < Math.min(5, packs.length); i++) {
-      let p = packs[i];
-      resultado += `*${i + 1}.* ${p.nombre}\n👤 Autor: ${p.autor}\n🔗 ${p.url}\n🧩 Stickers: ${p.número_de_pegatinas}\n\n`;
+      const p = packs[i];
+      msg += `*${i + 1}.* ${p.nombre}\n👤 *${p.autor}* | 🧩 *${p.número_de_pegatinas} stickers*\n🔗 ${p.url}\n\n`;
     }
 
-    await conn.sendMessage(m.chat, { text: resultado.trim() }, { quoted: m });
+    await conn.sendMessage(m.chat, { text: msg.trim() }, { quoted: m });
     await m.react('✅');
 
-  } catch (e) {
-    console.error('❌ ERROR:', e);
+  } catch (err) {
+    console.error('[ERROR]', err);
     await m.react('❌');
-    return conn.reply(m.chat, '❌ No se pudieron obtener resultados. Intenta con otro nombre.', m);
+    conn.reply(m.chat, '❌ La API no respondió o no encontró nada. Intenta con otro nombre o más tarde.', m);
   }
 };
 
