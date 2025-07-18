@@ -12,37 +12,40 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       return conn.reply(m.chat, `❌ No se encontraron packs de *${text}*.`, m);
     }
 
-    // Imagen decorativa
-    const imagenIntro = 'https://telegra.ph/file/62034697e1be964da1f92.jpg'; // puedes cambiarla
+    const resultados = json.data.slice(0, 3); // Los 3 primeros resultados
+    const imagenIntro = 'https://telegra.ph/file/62034697e1be964da1f92.jpg'; // Puedes cambiarla
 
-    await conn.sendMessage(m.chat, {
-      image: { url: imagenIntro },
-      caption: `🎀 *Buscando stickers de:* ${text}\n📦 Encontrados: ${json.data.length} packs.\n\nToca "Ver Packs" para explorarlos.`,
-    }, { quoted: m });
-
-    // Construir el menú tipo lista
-    let sections = json.data.map((pack, i) => ({
-      title: `${i + 1}. ${pack.name}`,
-      rows: [{
-        title: `✨ ${pack.name}`,
-        description: `👤 ${pack.author} · 🧩 ${pack.stickerCount} · 👁 ${pack.viewCount}`,
-        rowId: `${pack.url}` // Esto hará que al presionar se muestre y funcione como link
-      }]
+    const botones = resultados.map(pack => ({
+      urlButton: {
+        displayText: `${pack.name} (${pack.stickerCount})`,
+        url: pack.url
+      }
     }));
 
-    let listMessage = {
-      text: `🌟 *Resultados para:* ${text}`,
-      footer: '🧷 Stickerly Search by DIEGO-OFC',
-      title: '🎴 Selecciona un paquete:',
-      buttonText: '📦 Ver Packs',
-      sections
+    const mensaje = {
+      templateButtons: botones,
+      image: { url: imagenIntro },
+      caption: `🎀 *Resultado de:* ${text}\n\n${resultados.map((p, i) =>
+        `*${i + 1}.* ${p.name}\n👤 ${p.author}\n🧩 ${p.stickerCount} stickers\n👁 ${p.viewCount} vistas\n🔗 ${p.url}\n`).join('\n')}`,
+      footer: '🧷 Stickerly Search by Diego-OFC'
     };
 
-    await conn.sendMessage(m.chat, listMessage, { quoted: m });
+    const msg = await generateWAMessageFromContent(m.chat, proto.Message.fromObject({
+      templateMessage: {
+        hydratedTemplate: {
+          hydratedContentText: mensaje.caption,
+          locationMessage: { jpegThumbnail: await (await fetch(imagenIntro)).buffer() },
+          hydratedFooterText: mensaje.footer,
+          hydratedButtons: botones
+        }
+      }
+    }), { quoted: m });
+
+    await conn.relayMessage(m.chat, msg.message, { messageId: msg.key.id });
 
   } catch (e) {
     console.error(e);
-    conn.reply(m.chat, '❌ Error al buscar los stickers.', m);
+    conn.reply(m.chat, '❌ Ocurrió un error al buscar los stickers.', m);
   }
 };
 
