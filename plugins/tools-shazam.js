@@ -164,7 +164,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     }
 
     if (!spotifyUrl) {
-      const sp = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(text)}`);
+      const sp = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(title + ' ' + artist)}`);
       const json = await sp.json();
       if (json?.datos?.length) {
         spotifyUrl = json.datos[0]?.url || '';
