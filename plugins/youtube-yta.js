@@ -1,7 +1,10 @@
+// codigo creado por Dev.Shadow xD
+// https://gituhb.com/Yuji-XDev
+
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`🎧 *Ejemplo de uso:*\n\n${usedPrefix + command} https://youtube.com/watch?v=KHgllosZ3kA\n${usedPrefix + command} DJ malam pagi slowed`);
+  if (!text) return m.reply(`🌾 *Ejemplo de uso:*\n\n✎ ✧\`${usedPrefix + command}\` https://youtube.com/watch?v=KHgllosZ3kA\n✎ ✧\`${usedPrefix + command}\` DJ malam pagi slowed`);
 
   await m.react('🔍');
 
@@ -44,7 +47,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await conn.sendMessage(m.chat, {
       image: { url: info.thumb },
-      caption: `🎵 *Título:* ${info.title}\n👤 *Autor:* ${info.author}\n⏱️ *Duración:* ${info.duration}\n\n📥 *Enviando MP3...*`,
+      caption: `≡ 🌴 *\`Título:\`* ${info.title}\n≡ 🐛 *\`Autor:\`* ${info.author}\n≡ ⏱️ *\`Duración:\`* ${info.duration}\n\n🌳 *Enviando MP3...*`,
     }, { quoted: m });
 
     await conn.sendMessage(m.chat, {
@@ -62,8 +65,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.command = /^(playv|ytvreden|play7)$/i;
-handler.help = ['playv'].map(c => c + ' <enlace o texto>');
-handler.tags = ['downloader', 'music'];
+handler.command = /^(yta)$/i;
+handler.help = ['yta'].map(c => c + ' <enlace o texto>');
+handler.tags = ['downloader'];
 
 export default handler;
