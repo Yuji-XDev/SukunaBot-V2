@@ -1,32 +1,69 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text || !text.includes('youtu')) {
-    return conn.reply(m.chat, `❌ *Ingresa un enlace válido de YouTube.*\n\nEjemplo:\n${usedPrefix + command} https://youtu.be/ryVgEcaJhwM`, m);
-  }
+  if (!text) return m.reply(`🎧 *Ejemplo de uso:*\n\n${usedPrefix + command} https://youtube.com/watch?v=KHgllosZ3kA\n${usedPrefix + command} DJ malam pagi slowed`);
+
+  await m.react('🔍');
+
+  const isUrl = /^(https?:\/\/)?(www\.)?(youtube\.com|youtu\.be)\//i.test(text);
+  let info = null;
 
   try {
-    let res = await fetch(`https://dark-core-api.vercel.app/api/download/YTMP3?key=api&url=${encodeURIComponent(text)}`);
-    let json = await res.json();
 
-    if (!json.status || !json.download) {
-      return conn.reply(m.chat, '⚠️ No se pudo obtener el audio. Asegúrate que el link es válido o intenta más tarde.', m);
+    if (isUrl) {
+      let res1 = await fetch(`https://api.vreden.my.id/api/ytmp3?url=${encodeURIComponent(text)}`);
+      let json1 = await res1.json();
+
+      if (!json1?.resultado?.descarga?.url) throw '❌ Falló API 1';
+
+      info = {
+        title: json1.resultado.metadata.title,
+        author: json1.resultado.metadata.author?.nombre,
+        duration: json1.resultado.metadata.duración?.marca_de_tiempo,
+        thumb: json1.resultado.metadata.image,
+        download: json1.resultado.descarga.url,
+        filename: json1.resultado.descarga.filename
+      };
+    }
+
+    if (!info) {
+      let res2 = await fetch(`https://api.vreden.my.id/api/ytplaymp3?query=${encodeURIComponent(text)}`);
+      let json2 = await res2.json();
+
+      if (!json2?.result?.download?.url) throw '❌ Falló API 2';
+
+      info = {
+        title: json2.result.metadata.title,
+        author: json2.result.metadata.author?.name,
+        duration: json2.result.metadata.duration?.timestamp,
+        thumb: json2.result.metadata.thumbnail,
+        download: json2.result.download.url,
+        filename: json2.result.download.filename
+      };
     }
 
     await conn.sendMessage(m.chat, {
-      audio: { url: json.download },
-      fileName: `${json.title}.mp3`,
+      image: { url: info.thumb },
+      caption: `🎵 *Título:* ${info.title}\n👤 *Autor:* ${info.author}\n⏱️ *Duración:* ${info.duration}\n\n📥 *Enviando MP3...*`,
+    }, { quoted: m });
+
+    await conn.sendMessage(m.chat, {
+      audio: { url: info.download },
+      fileName: info.filename,
       mimetype: 'audio/mpeg'
     }, { quoted: m });
 
+    await m.react('✅');
+
   } catch (e) {
     console.error(e);
-    conn.reply(m.chat, '💥 Ocurrió un error al procesar el enlace.', m);
+    await m.reply('❌ *No se pudo obtener el MP3.* Intenta con otro título o link.');
+    await m.react('❌');
   }
 };
 
-handler.help = ['ytmp3'];
-handler.tags = ['downloader'];
-handler.command = /^ytmp3|ytaudio$/i;
+handler.command = /^(playv|ytvreden|play7)$/i;
+handler.help = ['playv'].map(c => c + ' <enlace o texto>');
+handler.tags = ['downloader', 'music'];
 
 export default handler;
