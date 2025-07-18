@@ -4,7 +4,7 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, text, usedPrefix, command }) => {
-  if (!text) return m.reply(`🌾 *Ejemplo de uso:*\n\n✎ ✧\`${usedPrefix + command}\` https://youtube.com/watch?v=KHgllosZ3kA\n✎ ✧\`${usedPrefix + command}\` DJ malam pagi slowed`);
+  if (!text) return m.reply(`🌾 *Ejemplo de uso:*\n\n✎ ✧ \`${usedPrefix + command}\` https://youtube.com/watch?v=KHgllosZ3kA\n✎ ✧ \`${usedPrefix + command}\` DJ malam pagi slowed`);
 
   await m.react('🔍');
 
@@ -65,7 +65,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.command = /^(yta)$/i;
+handler.command = ['yta'];
 handler.help = ['yta'].map(c => c + ' <enlace o texto>');
 handler.tags = ['downloader'];
 
