@@ -129,7 +129,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
   let mime = (q.msg || q).mimetype || q.mediaType || '';
 
   if (!/audio|video/.test(mime)) {
-    return conn.reply(m.chat, `🌪️ Responde a un *audio o video* con el comando *${usedPrefix + command}* para reconocer la música.`, m);
+    return conn.reply(m.chat, `🌪️ Responde a un *audio o video* con el comando *${usedPrefix + command}* para reconocer la música.`, m, rcanal);
   }
 
   try {
@@ -152,21 +152,19 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     const image = meta.album?.images?.[0]?.url || '';
     const release = meta.release_date || 'Desconocido';
 
-    // Enlaces con respaldo
+
     const ytId = meta.external_metadata?.youtube?.vid;
     let youtubeUrl = ytId ? `https://youtu.be/${ytId}` : '';
     let spotifyUrl = meta.external_metadata?.spotify?.track?.external_urls?.spotify || '';
 
-    // Si no se encontró YouTube, buscar manualmente
     if (!youtubeUrl) {
       const yt = await yts(`${title} ${artist}`);
       const video = yt.videos[0];
       if (video) youtubeUrl = video.url;
     }
 
-    // Si no se encontró Spotify, buscar manualmente
     if (!spotifyUrl) {
-      const sp = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(title + ' ' + artist)}`);
+      const sp = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(text)}`);
       const json = await sp.json();
       if (json?.datos?.length) {
         spotifyUrl = json.datos[0]?.url || '';
