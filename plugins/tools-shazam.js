@@ -17,6 +17,7 @@ function msToTime(duration) {
 }
 
 let handler = async (m, { conn, command, usedPrefix }) => {
+  let filepath;
   try {
     let q = m.quoted ? m.quoted : m;
     let mime = (q.msg || q).mimetype || q.mediaType || '';
@@ -32,17 +33,17 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     await m.react('⏱️');
 
     let buffer = await q.download();
-    if (!buffer) throw '❌ Ocurrió un error al descargar el archivo.';
+    if (!buffer || !Buffer.isBuffer(buffer)) throw 'No se pudo descargar el archivo correctamente.';
     if (buffer.length > 1024 * 1024 * 5)
       throw '⚠️ El archivo es muy grande. Usa uno menor a 5MB.';
 
     let filename = `${randomUUID()}.mp3`;
-    let filepath = join(tmpdir(), filename);
+    filepath = join(tmpdir(), filename);
     await writeFile(filepath, buffer);
 
     let res = await acr.identify(buffer);
-
-    await unlink(filepath);
+    
+    if (filepath) await unlink(filepath).catch(() => {}); // eliminar archivo si existe
 
     if (res.status.msg !== 'Success') throw '❌ No se encontró coincidencia.';
 
@@ -52,8 +53,9 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     let duration = meta.duration_ms ? msToTime(meta.duration_ms) : 'Desconocido';
     let genres = meta.genres || [];
 
-    // URLs disponibles
-    let youtubeUrl = meta.external_metadata?.youtube?.vid ? `https://youtu.be/${meta.external_metadata.youtube.vid}` : meta.external_metadata?.youtube?.url || '';
+    let youtubeUrl = meta.external_metadata?.youtube?.vid
+      ? `https://youtu.be/${meta.external_metadata.youtube.vid}`
+      : meta.external_metadata?.youtube?.url || '';
     let spotifyUrl = meta.external_metadata?.spotify?.track?.href || '';
 
     let txt = `╭─⬣「 *🎧 WHATMUSIC DETECTADO* 」⬣
@@ -70,7 +72,6 @@ let handler = async (m, { conn, command, usedPrefix }) => {
 
     let thumbnail = meta.album?.images?.[0]?.url || '';
 
-    // Construir botones solo si el título existe
     let buttons = [];
     if (meta.title) {
       buttons.push({
@@ -101,8 +102,10 @@ let handler = async (m, { conn, command, usedPrefix }) => {
       { quoted: m }
     );
   } catch (e) {
-    console.error(e);
-    conn.reply(m.chat, `❌ Error: ${e}`, m);
+    console.error('Error en whatmusic:', e);
+    conn.reply(m.chat, `❌ No se pudo procesar el archivo. Asegúrate de que sea un audio válido.`, m);
+  } finally {
+    if (filepath) await unlink(filepath).catch(() => {});
   }
 };
 
