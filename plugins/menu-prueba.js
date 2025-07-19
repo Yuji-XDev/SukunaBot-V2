@@ -13,7 +13,7 @@ let handler = async (m, { conn }) => {
       };
       return text.toLowerCase().split('').map(c => map[c] || c).join('');
     };
-    const palabrasClave = ['search', 'buscador'];
+    const palabrasClave = ['nable'];
 
 
     const comandosBusqueda = Object.values(global.plugins).filter(
@@ -25,20 +25,14 @@ let handler = async (m, { conn }) => {
     );
 
     const listaComandos = comandosBusqueda.map(plugin => {
-      return plugin.help.map(cmd => `യ ׄ🌲˚ #${toAesthetic(cmd)}`).join('\n');
+      return plugin.help.map(cmd => `യ ׄ🌳˚ .${toAesthetic(cmd)}`).join('\n');
     }).join('\n');
 
  
-    const texto = `ʜᴏʟᴀ
-╔═══════ • ° ❁⊕❁ ° • ═══════╗
-    💥⃢᭄͜═✩═[𝐌𝐄𝐍𝐔-𝐒𝐄𝐀𝐑𝐂𝐇]═✩═⃟⃢᭄͜🔎
-╚═══════ • ° ❁⊕❁ ° • ═══════╝
+    const texto = `
+${listaComandos }
 
-> 🔍⊹ *ᴄᴏᴍᴀɴᴅᴏs ᴅᴇ ʙᴜ́sǫᴜᴇᴅᴀ* ⊹🔎
-
-${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴᴅᴏs ᴅᴇ ʙᴜ́sǫᴜᴇᴅᴀ'}
-
-> ${global.dev || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ'}
+> ${global.club || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ'}
 `.trim();
 
 
@@ -47,7 +41,7 @@ ${listaComandos || '❌ ɴᴏ sᴇ ᴇɴᴄᴏɴᴛʀᴀʀᴏɴ ᴄᴏᴍᴀɴ�
       caption: texto,
       footer: '⛩️ Sukuna Bot MD',
       buttons: [
-        { buttonId: '#menulist', buttonText: { displayText: 'ᴍᴇɴᴜ ʟɪsᴛ' }, type: 1 },
+        { buttonId: '#menu', buttonText: { displayText: 'ᴍᴇɴᴜ ᴀʟʟ' }, type: 1 },
         { buttonId: '#perfil', buttonText: { displayText: 'ᴘᴇʀғɪʟ' }, type: 1 },
       ],
       headerType: 4,
