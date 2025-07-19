@@ -9,7 +9,7 @@ let handler = async (m, { conn, args }) => {
   let banner = global.banner || 'https://files.catbox.moe/ha863t.jpg'
   let redes = global.redes || 'https://github.com'
 
-  let menu_prueba = ` ${name}
+  let prueba = `
    
 > ${dev}
 `.trim()
@@ -21,7 +21,7 @@ let handler = async (m, { conn, args }) => {
 
   await conn.sendMessage(m.chat, {
     video: { url: img },
-    caption: menu_prueba,
+    caption: prueba,
     gifPlayback: true,
     buttons: buttons,
     headerType: 4,
