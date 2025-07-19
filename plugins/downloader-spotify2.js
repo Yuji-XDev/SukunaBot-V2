@@ -56,8 +56,6 @@ handler.limit = 2;
 
 export default handler;*/
 
-
-
 import axios from "axios";
 import * as cheerio from "cheerio";
 
@@ -80,19 +78,6 @@ const getToken = async () => {
   return res.data.access_token;
 };
 
-const searchTrack = async (query, token) => {
-  const res = await axios.get(
-    `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=track&limit=1`,
-    {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    }
-  );
-  if (res.data.tracks.items.length === 0) throw new Error("Canción no encontrada.");
-  return res.data.tracks.items[0];
-};
-
 const handler = async (m, { conn, text }) => {
   if (!text || !/https?:\/\/(open\.)?spotify\.com\/track\/[a-zA-Z0-9]+/.test(text))
     return m.reply("🌴 Ingresa una URL válida de Spotify (track).");
@@ -106,20 +91,21 @@ const handler = async (m, { conn, text }) => {
       headers: { Authorization: `Bearer ${token}` },
     });
     const track = await res.json();
-
     const thumb = track.album.images[0]?.url;
 
     const data = new SpotMate();
     const info = await data.convert(track.external_urls.spotify);
 
+    if (!info || !info.url) throw new Error("URL no disponible en SpotMate.");
+
     await conn.sendMessage(m.chat, {
       audio: { url: info.url },
-      fileName: `${info.title}.mp3`,
+      fileName: `${info.title || 'spotify_track'}.mp3`,
       mimetype: 'audio/mpeg',
       ptt: false,
       contextInfo: {
         externalAdReply: {
-          title: info.title,
+          title: info.title || track.name,
           body: 'Descarga completa 🌾',
           thumbnail: thumb,
           mediaType: 1,
@@ -133,7 +119,7 @@ const handler = async (m, { conn, text }) => {
   } catch (err) {
     console.error(err);
     await conn.sendMessage(m.chat, { react: { text: "❌", key: m.key } });
-    m.reply("❌ No se pudo obtener la canción. Intenta de nuevo más tarde.\n\n" + err);
+    m.reply("❌ No se pudo obtener la canción. Intenta de nuevo más tarde.\n\n" + err.message);
   }
 };
 
@@ -176,7 +162,16 @@ class SpotMate {
       const response = await axios.post(
         'https://spotmate.online/convert',
         { urls: spotifyUrl },
-        { headers: this._getHeaders() }
+        {
+          headers: this._getHeaders(),
+          transformResponse: [(data) => {
+            try {
+              return JSON.parse(data);
+            } catch {
+              throw new Error('Respuesta inválida de SpotMate (no es JSON válido).');
+            }
+          }]
+        }
       );
       return response.data;
     } catch (error) {
