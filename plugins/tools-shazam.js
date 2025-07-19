@@ -69,15 +69,15 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     }
 
     const txt = `╭─⬣「 *🌾 WHATMUSIC TOOLS* 🇦🇱 」⬣
-│ 🌾 *Título:* ${title}
-│ 👻 *Artista:* ${artist}
-│ 🧁 *Álbum:* ${album}
-│ 👾 *Género:* ${genres}
-│ 💥 *Lanzamiento:* ${release}
-│ ⏱️ *Duración:* ${duration}
+│ 🌾 *\`Título:\`* ${title}
+│ 👻 *\`Artista:\`* ${artist}
+│ 🧁 *\`Álbum:\`* ${album}
+│ 👾 *\`Género:\`* ${genres}
+│ 💥 *\`Lanzamiento:\`* ${release}
+│ ⏱️ *\`Duración:\`* ${duration}
 │
-│ 🎄 *YouTube:* ${youtubeUrl || 'No encontrado'}
-│ 🔥 *Spotify:* ${spotifyUrl || 'No encontrado'}
+│ 🎄 *\`YouTube:\`* ${youtubeUrl || 'No encontrado'}
+│ 🔥 *\`Spotify:\`* ${spotifyUrl || 'No encontrado'}
 ╰⬣`;
 
     await conn.sendMessage(m.chat, {
