@@ -1,4 +1,4 @@
-/*import fetch from "node-fetch";
+import fetch from "node-fetch";
 import yts from 'yt-search';
 import axios from "axios";
 
@@ -159,9 +159,9 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
   }
 };
 
-handler.help = ['ytmp3', 'ytmp4'];
+handler.help = ['audio', 'video'];
 handler.tags = ['descargas'];
-handler.command = ['ytmp3', 'ytmp4'];
+handler.command = ['audio', 'video'];
 //handler.group = true;
 export default handler;
 
@@ -172,4 +172,3 @@ function formatViews(views) {
     return views.toString();
   }
 }
-*/
