@@ -6,7 +6,7 @@ const youtubeRegexID = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/))([a-z
 const handler = async (m, { conn, text, usedPrefix, command }) => {
   try {
     if (!text.trim()) {
-      return conn.reply(m.chat, `❀ Por favor, ingresa el nombre de la música a descargar.`, m)
+      return conn.reply(m.chat, `*🌳 Por favor, ingresa el nombre de la música a descargar.*`, m, rcanal)
     }
   
 let videoIdToFind = text.match(youtubeRegexID) || null
@@ -31,6 +31,7 @@ author = author || 'no encontrado'
     const vistas = formatViews(views)
     const canal = author.name ? author.name : 'Desconocido'
     const infoMessage = `\`\`\`乂 YOUTUBE - PLAY\`\`\`
+
 🌴 *${title || 'Desconocido'}*
 
 ≡ 🌵 *\`Duración:\`* ${timestamp || 'Desconocido'}
@@ -42,8 +43,8 @@ author = author || 'no encontrado'
     const JT = {
       contextInfo: {
         externalAdReply: {
-          title: botname,
-          body: dev,
+          title: bot,
+          body: club,
           mediaType: 1,
           previewType: 0,
           mediaUrl: url,
