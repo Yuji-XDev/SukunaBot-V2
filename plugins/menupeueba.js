@@ -1,7 +1,7 @@
 let handler = async (m, { conn, args }) => {
   let userId = m.mentionedJid?.[0] || m.sender
   let user = global.db.data.users[userId]
-  let name = await conn.getName(userId) // Se necesita await
+  let name = await conn.getName(userId)
   let img = 'https://files.catbox.moe/ha863t.jpg'
 
 
@@ -9,52 +9,19 @@ let handler = async (m, { conn, args }) => {
   let banner = global.banner || 'https://files.catbox.moe/ha863t.jpg'
   let redes = global.redes || 'https://github.com'
 
-  let perfiltext = ` ${name}
-     ╔═══════ • ° ❁⊕❁ ° • ═══════╗
-        💥⃢᭄͜═✩═[𝐌𝐄𝐍𝐔-𝐒𝐄𝐀𝐑𝐂𝐇]═✩═⃟⃢᭄͜🔎
-    ╚═══════ • ° ❁⊕❁ ° • ═══════╝
-      
-> 🔍⊹ *𝐂𝐨𝐦𝐚𝐧𝐝𝐨𝐬 𝐝𝐞 𝐁𝐮́𝐬𝐪𝐮𝐞𝐝𝐚* ⊹🔎
-  
-━⃨⃛━╼─╍╍╍─╍▻◅╍─╍╍╼╼━⃨⃛╍╍
-യ ׄ🌲˚ #sᴇᴀʀᴄʜʜᴇɴᴛᴀɪ
-യ ׄ🌲˚ #ᴄᴜᴇᴠᴀɴᴀsᴇᴀʀᴄʜ
-യ ׄ🌲˚ #ɢɪᴛʜᴜʙsᴇᴀʀᴄʜ
-യ ׄ🌲˚ #ɢᴏᴏɢʟᴇ
-യ ׄ🌲˚ #ɪᴍᴀɢᴇɴ *<ǫᴜᴇʀʏ>*
-യ ׄ🌲˚ #ɪɴғᴏᴀɴɪᴍᴇ
-യ ׄ🌲˚ #ɴᴘᴍᴊs
-യ ׄ🌲˚ #ᴘɪɴᴛᴇʀᴇsᴛ  *<ǫᴜᴇʀʏ>*
-യ ׄ🌲˚ #ᴘᴏʀɴʜᴜʙsᴇᴀʀᴄʜ
-യ ׄ🌲˚ #sᴏᴜɴᴅᴄʟᴏᴜᴅsᴇᴀʀᴄʜ *<ᴛᴇxᴛᴏ>*
-യ ׄ🌲˚ #sᴘᴏᴛɪғʏsᴇᴀʀᴄʜ *<ᴛᴇxᴛᴏ>*
-യ ׄ🌲˚ #ᴛɪᴋᴛᴏᴋsᴇᴀʀᴄʜ *<ᴛᴇxᴛᴏ>*
-യ ׄ🌲˚ #ᴛᴡᴇᴇᴛᴘᴏsᴛs
-യ ׄ🌲˚ #xɴxxsᴇᴀʀᴄʜ *<ǫᴜᴇʀʏ>*
-യ ׄ🌲˚ #xᴠɪᴅᴇᴏssᴇᴀʀᴄʜ
-യ ׄ🌲˚ #ʏᴛsᴇᴀʀᴄʜ
-യ ׄ🌲˚ #ʏᴛsᴇᴀʀᴄʜ2 *<ᴛᴇxᴛ>*
-യ ׄ🌲˚ #ᴍᴏᴅs *<ǫᴜᴇʀʏ>*
-യ ׄ🌲˚ #ɢɴᴜʟᴀ
-യ ׄ🌲˚ #ᴀᴘᴋsᴇᴀʀᴄʜ
-യ ׄ🌲˚ #ᴡɪᴋɪs
-യ ׄ🌲˚ #ғᴅʀᴏɪᴅsᴇᴀʀᴄʜ *<ᴛᴇʀᴍɪɴᴏ>*
-യ ׄ🌲˚ #ᴍᴏᴠɪᴇ *<ᴛᴇʀᴍɪɴᴏ>*
-യ ׄ🌲˚ #ʜᴀᴘᴘʏᴍᴏᴅsᴇᴀʀᴄʜ *<ʙᴜsǫᴜᴇᴅᴀ>*
-യ ׄ🌲˚ #ᴄɪɴᴇᴄᴀʟɪᴅᴀᴅsᴇᴀʀᴄʜ *<ʙᴜsǫᴜᴇᴅᴀ>*
-യ ׄ🌲˚ #ʏᴀᴏᴏsᴇᴀʀᴄʜ *<ʙᴜsǫᴜᴇᴅᴀ>*
-
+  let menu_prueba = ` ${name}
+   
 > ${dev}
 `.trim()
 
   let buttons = [
-    { buttonId: '.perfil', buttonText: { displayText: '♥ perfil ♥' }, type: 1 },
-    { buttonId: '.menu', buttonText: { displayText: '♦ menu ♦' }, type: 1 }
+    { buttonId: '.perfil', buttonText: { displayText: ' perfil ' }, type: 1 },
+    { buttonId: '.menu', buttonText: { displayText: 'menu all' }, type: 1 }
   ]
 
   await conn.sendMessage(m.chat, {
     video: { url: img },
-    caption: perfiltext,
+    caption: menu_prueba,
     gifPlayback: true,
     buttons: buttons,
     headerType: 4,
