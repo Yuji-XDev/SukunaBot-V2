@@ -38,7 +38,7 @@ let handler = async (m, { conn }) => {
 
   const lista = subbotsUnicos.map((bot, i) => {
     return `✦ 🧩 𝑩𝑶𝑻 #${i + 1} 
-🧸 \`Usuario: ${bot.user?.name || '𝑺𝒖𝒃 𝑩𝒐𝒕'}
+🧸 \`Usuario:\` ${bot.user?.name || '𝑺𝒖𝒃 𝑩𝒐𝒕'}
 📲 \`Link:\` wa.me/${(bot.user?.jid || '').replace(/[^0-9]/g, '')}
 ⏳ \`En linea:\` ${bot.uptime ? convertirMsADiasHorasMinutosSegundos(Date.now() - bot.uptime) : '𝘿𝙚𝙨𝙘𝙤𝙣𝙤𝙘𝙞𝙙𝙤'}`;
   }).join('\n\n');
