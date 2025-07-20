@@ -1,3 +1,5 @@
+import fetch from 'node-fetch';
+
 export async function before(m, { conn }) {
   if (!m.text || !global.prefix.test(m.text)) return;
 
@@ -62,11 +64,15 @@ export async function before(m, { conn }) {
 
     const mensaje = mensajesNoEncontrado[Math.floor(Math.random() * mensajesNoEncontrado.length)];
 
+    const miniLogo = await fetch(global.icono || 'https://files.catbox.moe/bs0ecf.png')
+      .then(res => res.buffer())
+      .catch(() => null);
+
     await conn.sendMessage(m.chat, {
       text: mensaje,
-      footer: '⛩️ Sukuna Bot MD',
+      footer: '⛩️ Sukuna Bot MD 🎄',
       buttons: [
-        { buttonId: '#menu', buttonText: { displayText: 'ᴍᴇɴᴜ ᴀʟʟ' }, type: 1 },
+        { buttonId: '#menu', buttonText: { displayText: '🌾 ᴍᴇɴᴜ ᴀʟʟ' }, type: 1 },
       ],
       headerType: 1,
       contextInfo: {
@@ -78,6 +84,7 @@ export async function before(m, { conn }) {
           mediaType: 1,
           renderLargerThumbnail: true,
           showAdAttribution: true,
+          jpegThumbnail: miniLogo,
           mediaUrl: 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U',
           sourceUrl: 'https://whatsapp.com/channel/0029VbAtbPA84OmJSLiHis2U'
         }
