@@ -8,7 +8,7 @@ const handler = async (m, { conn, text, command }) => {
   await m.react('⏳');
 
   try {
-    if (command === 'ytmp3') {
+    if (command === 'ytmp33') {
       const res = await fetch(`https://dark-core-api.vercel.app/api/download/YTMP3?key=api&url=${encodeURIComponent(text)}`);
       const json = await res.json();
 
@@ -16,7 +16,7 @@ const handler = async (m, { conn, text, command }) => {
 
       await conn.sendFile(m.chat, json.download, 'audio.mp3', `🎧 *Título:* ${json.title}\n📥 *Audio descargado con éxito.*`, m);
 
-    } else if (command === 'ytmp4') {
+    } else if (command === 'ytmp44') {
       const res = await fetch(`https://dark-core-api.vercel.app/api/download/ytmp4/v2?key=api&url=${encodeURIComponent(text)}`);
       const json = await res.json();
 
