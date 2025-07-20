@@ -1,5 +1,3 @@
-import fetch from 'node-fetch';
-
 export async function before(m, { conn }) {
   if (!m.text || !global.prefix.test(m.text)) return;
 
@@ -10,7 +8,8 @@ export async function before(m, { conn }) {
 
   const isValidCommand = (cmd, plugins) => {
     for (let plugin of Object.values(plugins)) {
-      const cmdList = Array.isArray(plugin.command) ? plugin.command : [plugin.command];
+      if (!plugin || !plugin.command) continue;
+      const cmdList = Array.isArray(plugin.command) ? plugin.command.map(c => c.toLowerCase()) : [plugin.command.toLowerCase()];
       if (cmdList.includes(cmd)) return true;
     }
     return false;
@@ -28,7 +27,6 @@ export async function before(m, { conn }) {
 > 🎄 𝑼𝒏 *𝒂𝒅𝒎𝒊𝒏𝒊𝒔𝒕𝒓𝒂𝒅𝒐𝒓* 𝒅𝒆𝒃𝒆 𝒂𝒄𝒕𝒊𝒗𝒂𝒓𝒍𝒐 𝒖𝒔𝒂𝒏𝒅𝒐:
 
 > » *${usedPrefix}bot on*`;
-
       await m.reply(avisoDesactivado);
       return;
     }
