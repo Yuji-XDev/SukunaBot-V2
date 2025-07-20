@@ -1,20 +1,37 @@
-import yts from 'yt-search';
+import fetch from 'node-fetch';
 
-let handler = async (m, { conn, usedPrefix, text, args, command }) => {
-if (!text) return m.reply(`*¿Qué está buscando?* Ingrese el nombre del tema\n*• Ejemplo*\n*${usedPrefix + command}* bad bunny`);
-m.react('📀');
-let result = await yts(text);
-let ytres = result.videos;
-if (!ytres.length) return m.reply('❌ No se encontraron resultados.');
-let textoo = `*• Resultados de:*  ${text}\n\n`;
-for (let i = 0; i < Math.min(15, ytres.length); i++) { 
-let v = ytres[i];
-textoo += `🎵 *Título:* ${v.title}\n📆 *Publicado hace:* ${v.ago}\n👀 *Vistas:* ${v.views}\n⌛ *Duración:* ${v.timestamp}\n🔗 *Enlace:* ${v.url}\n\n⊱ ────── {.⋅ ♫ ⋅.} ───── ⊰\n\n`;
-}
-await conn.sendFile(m.chat, ytres[0].image, 'thumbnail.jpg', textoo, m);
+const handler = async (m, { conn, text, command }) => {
+  if (!text || !text.includes('youtu')) {
+    return m.reply('🎥 *Por favor, proporciona un enlace válido de YouTube.*');
+  }
+
+  await m.react('⏳');
+
+  try {
+    if (command === 'ytmp3') {
+      const res = await fetch(`https://dark-core-api.vercel.app/api/download/YTMP3?key=api&url=${encodeURIComponent(text)}`);
+      const json = await res.json();
+
+      if (!json.status) throw '❌ No se pudo obtener el audio.';
+
+      await conn.sendFile(m.chat, json.download, 'audio.mp3', `🎧 *Título:* ${json.title}\n📥 *Audio descargado con éxito.*`, m);
+
+    } else if (command === 'ytmp4') {
+      const res = await fetch(`https://dark-core-api.vercel.app/api/download/ytmp4/v2?key=api&url=${encodeURIComponent(text)}`);
+      const json = await res.json();
+
+      if (!json.download) throw '❌ No se pudo obtener el video.';
+
+      await conn.sendFile(m.chat, json.download, 'video.mp4', `🎬 *Título:* ${json.title}\n📽️ *Calidad:* ${json.quality}p\n📥 *Video descargado con éxito.*`, m);
+    }
+  } catch (e) {
+    console.error(e);
+    m.reply('⚠️ Error al procesar la descarga. Intenta más tarde.');
+  }
 };
-handler.help = ['playvid2'];
+
+handler.help = ['ytmp33 <url>', 'ytmp44 <url>'];
 handler.tags = ['downloader'];
-handler.command = ['playvid2'];
-handler.register = true;
+handler.command = /^ytmp33|ytmp44$/i;
+
 export default handler;
