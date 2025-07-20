@@ -5,7 +5,7 @@ import { prepareWAMessageMedia, generateWAMessageFromContent } from '@whiskeysoc
 const handler = async (m, { conn, args, usedPrefix, command }) => {
   if (!args[0]) return conn.reply(m.chat, `*❗ Ingresa un título para buscar en YouTube.*\n✧ \`Ejemplo:\` ${usedPrefix}${command} Joji - Ew`, m, rcanal);
 
-  await m.react('🔎');
+  await m.react('🎲');
   try {
     let query = args.join(" ");
     let searchResults = await searchVideos(query);
@@ -25,7 +25,8 @@ const handler = async (m, { conn, args, usedPrefix, command }) => {
     }
 
 
-const caption = `🌳  YOUTUBE PLAY 🎬
+const caption = `*🌳  YOUTUBE PLAY 🎬*
+
 *✧ titulo:* ${video.titulo || 'no encontrado'}
 *✧ duracion:* ${video.duracion || 'no encontrado'}
 *✧ publicado:* ${video.publicado || 'no encontrado'}
@@ -83,7 +84,7 @@ const caption = `🌳  YOUTUBE PLAY 🎬
     await conn.sendMessage(m.chat, {
       image: thumbnail,
       caption: caption,
-      footer: wm,
+      footer: club,
       contextInfo: {
         mentionedJid: [m.sender],
         forwardingScore: 999,
