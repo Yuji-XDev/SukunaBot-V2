@@ -2,7 +2,7 @@
 // https://github.com/Yuji-XDev
 
 import acrcloud from 'acrcloud';
-import { writeFile, unlink } from 'fs/promises';
+import { writeFile, unlink, readFile } from 'fs/promises';
 import { tmpdir } from 'os';
 import { join } from 'path';
 import { randomUUID } from 'crypto';
@@ -26,18 +26,24 @@ let handler = async (m, { conn, command, usedPrefix }) => {
   let mime = (q.msg || q).mimetype || q.mediaType || '';
 
   if (!/audio|video/.test(mime)) {
-    return conn.reply(m.chat, `🌪️ Responde a un *audio o video* con el comando *${usedPrefix + command}* para reconocer la música.`, m, rcanal);
+    return conn.reply(m.chat, `🌪️ Responde a un *audio o video* con el comando *${usedPrefix + command}* para reconocer la música.`, m);
   }
 
   try {
     await m.react('🔍');
-    let buffer = await q.download();
-    if (!buffer) throw '❌ No se pudo encontrar el archivo.';
+
+    const buffer = await q.download();
+    if (!buffer || buffer.length === 0) throw '❌ No se pudo descargar correctamente el archivo.';
     if (buffer.length > 1024 * 1024 * 5) throw '*⚠️ El archivo es muy grande. Usa uno menor a 5MB.*';
 
-    const res = await acr.identify(buffer);
-    if (res.status.msg !== 'Success') throw '❌ No se detectó ninguna coincidencia.';
+    const tempPath = join(tmpdir(), `${randomUUID()}.mp3`);
+    await writeFile(tempPath, buffer);
+    const fileBuffer = await readFile(tempPath);
 
+    const res = await acr.identify(fileBuffer);
+    await unlink(tempPath);
+
+    if (res.status.msg !== 'Success') throw '❌ No se detectó ninguna coincidencia.';
     const meta = res.metadata?.music?.[0];
     if (!meta) throw '❌ No se reconoció ninguna canción.';
 
@@ -46,12 +52,14 @@ let handler = async (m, { conn, command, usedPrefix }) => {
     const title = meta.title || 'Desconocido';
     const artist = meta.artists?.[0]?.name || 'Desconocido';
     const album = meta.album?.name || 'Desconocido';
-    const image = meta.album?.images?.[0]?.url || 'xd';
+    const image = meta.album?.images?.[0]?.url || 'https://i.imgur.com/yYUk4Yr.jpg';
     const release = meta.release_date || 'Desconocido';
 
 
-    const ytId = meta.external_metadata?.youtube?.vid;
-    let youtubeUrl = ytId ? `https://youtu.be/${ytId}` : '';
+    let youtubeUrl = meta.external_metadata?.youtube?.vid
+      ? `https://youtu.be/${meta.external_metadata.youtube.vid}`
+      : '';
+
     let spotifyUrl = meta.external_metadata?.spotify?.track?.external_urls?.spotify || '';
 
     if (!youtubeUrl) {
@@ -60,6 +68,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
       if (video) youtubeUrl = video.url;
     }
 
+    
     if (!spotifyUrl) {
       const sp = await fetch(`https://delirius-apiofc.vercel.app/search/spotify?q=${encodeURIComponent(title + ' ' + artist)}`);
       const json = await sp.json();
@@ -87,10 +96,10 @@ let handler = async (m, { conn, command, usedPrefix }) => {
           title: title,
           body: artist,
           thumbnailUrl: image,
-          sourceUrl: youtubeUrl,
+          sourceUrl: youtubeUrl || spotifyUrl,
           mediaType: 1,
-          renderLargerThumbnail: true
-        }
+          renderLargerThumbnail: true,
+        },
       },
       buttons: [
         {
@@ -104,12 +113,12 @@ let handler = async (m, { conn, command, usedPrefix }) => {
           type: 1
         }
       ],
-      footer: club,
+      footer: '💿 WhatMusic by Black.OFC',
     }, { quoted: m });
 
   } catch (e) {
     console.error('[WHATMUSIC ❌]:', e);
-    conn.reply(m.chat, `❌ Error: ${e}`, m);
+    conn.reply(m.chat, `❌ *No se pudo reconocer la música.*\n\n🔁 Intenta con otro audio (mínimo 10s y buena calidad).\n📛 *Error técnico:* ${e}`, m);
   }
 };
 
