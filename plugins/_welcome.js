@@ -1,4 +1,4 @@
-// Shadow'Core
+
 import { WAMessageStubType } from '@whiskeysockets/baileys'
 import fetch from 'node-fetch'
 
