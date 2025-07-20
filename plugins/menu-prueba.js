@@ -30,7 +30,7 @@ let handler = async (m, { conn }) => {
 
  
     const texto = `
-${listaComandos }
+*${listaComandos }* (on/off)
 
 > ${global.club || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ'}
 `.trim();
