@@ -25,11 +25,11 @@ const handler = async (m, { conn, args, usedPrefix, command }) => {
     }
 
 
-const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮  
+const caption = `🌳  YOUTUBE PLAY 🎬
 *✧ titulo:* ${video.titulo || 'no encontrado'}
+*✧ duracion:* ${video.duracion || 'no encontrado'}
 *✧ publicado:* ${video.publicado || 'no encontrado'}
 *✧ canal:* ${video.canal || 'no encontrado'}
-*✧ duracion:* ${video.duracion || 'no encontrado'}
 *✧ vistas:* ${video.vistas || 'no encontrado'}
 *✧ url:* ${video.url}`;
     let ytSections = searchResults.slice(1, 11).map((v, index) => ({
@@ -92,12 +92,12 @@ const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮
       buttons: [
         {
           buttonId: `${usedPrefix}ytmp3 ${video.url}`,
-          buttonText: { displayText: '🎧 Descargar 𝖠𝗎𝖽𝗂𝗈' },
+          buttonText: { displayText: '🌳 𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝑨𝒖𝒅𝒊𝒐' },
           type: 1,
         },
         {
           buttonId: `${usedPrefix}ytmp4 ${video.url}`,
-          buttonText: { displayText: '🎬 Descargar 𝖵𝗂𝖽𝖾𝗈' },
+          buttonText: { displayText: '🌾 𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝑽𝒊𝒅𝒆𝒐' },
           type: 1,
         },
         {
@@ -105,7 +105,7 @@ const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮
           nativeFlowInfo: {
             name: 'single_select',
             paramsJson: JSON.stringify({
-              title: '𝖱𝖾𝗌𝗎𝗅𝗍𝖺𝖽𝗈𝗌 De 𝖸𝗈𝗎𝖳𝗎𝖻𝖾',
+              title: '📺 𝐑𝐄𝐒𝐔𝐋𝐓𝐀𝐃𝐎 𝐃𝐄 𝐘𝐎𝐔𝐓𝐔𝐁𝐄',
               sections: ytSections,
             }),
           },
@@ -125,7 +125,7 @@ const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮
           nativeFlowInfo: {
             name: 'single_select',
             paramsJson: JSON.stringify({
-              title: '𝖱𝖾𝗌𝗎𝗅𝗍𝖺𝖽𝗈𝗌 De 𝖲𝗉𝗈𝗍𝗂𝖿𝗒',
+              title: '🎲 𝐑𝐄𝐒𝐔𝐋𝐓𝐀𝐃𝐎 𝐃𝐄 𝐒𝐏𝐎𝐓𝐈𝐅𝐘',
               sections: spotifySections,
             }),
           },
@@ -143,9 +143,9 @@ const caption = `╭  ✦ \`\`\`Result Play\`\`\` ✦  ╮
   }
 };
 
-handler.help = ['play8 *<texto>*'];
+handler.help = ['play *<texto>*'];
 handler.tags = ['downloader'];
-handler.command = ['play8'];
+handler.command = ['play', 'play2'];
 export default handler;
 
 async function searchVideos(query) {
