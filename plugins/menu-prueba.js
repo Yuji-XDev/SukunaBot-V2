@@ -25,12 +25,12 @@ let handler = async (m, { conn }) => {
     );
 
     const listaComandos = comandosBusqueda.map(plugin => {
-      return plugin.help.map(cmd => `*യ ׄ🌳˚ .${toAesthetic(cmd)}*`).join('\n');
+      return plugin.help.map(cmd => `*യ ׄ🌳˚ .${toAesthetic(cmd)}* (on/off)`).join('\n');
     }).join('\n');
 
  
     const texto = `
-${listaComandos } (on/off)
+${listaComandos }
 
 > ${global.club || '👑 ʙᴏᴛ ᴘᴏʀ ʙʟᴀᴄᴋ'}
 `.trim();
