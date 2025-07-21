@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+/*import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, command }) => {
   if (!text || !text.includes('spotify.com')) {
@@ -53,5 +53,46 @@ handler.tags = ['descargas'];
 handler.command = ['music'];
 handler.register = true;
 handler.limit = 2;
+
+export default handler;*/
+
+
+import fetch from 'node-fetch';
+
+let handler = async (m, { conn, args, usedPrefix, command }) => {
+  if (!args[0]) {
+    await conn.sendMessage(m.chat, { text: `🎧 Ingresa el enlace de una canción de Spotify.\n\n📌 Ejemplo:\n${usedPrefix + command} https://open.spotify.com/track/7HxY2FrvAhEvjxGa3YR93q` }, { quoted: m });
+    return;
+  }
+
+  const url = args[0];
+  if (!url.includes('spotify.com')) return;
+
+  try {
+    const api = `https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(url)}&apikey=sylphy-c519`;
+    const res = await fetch(api);
+    const json = await res.json();
+
+    if (!json.status || !json.data?.audio) return;
+
+    const { title, artist, duration, image, audio } = json.data;
+
+    let caption = `
+🎵 *Título:* ${title}
+🎤 *Artista:* ${artist}
+⏱️ *Duración:* ${duration}
+🔗 *Enlace:* ${url}
+`.trim();
+
+    await conn.sendFile(m.chat, image, 'cover.jpg', caption, m); // Imagen
+    await conn.sendMessage(m.chat, { audio: { url: audio }, mimetype: 'audio/mp4' }, { quoted: m });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
+handler.help = ['music'].map(v => v + ' <enlace>');
+handler.tags = ['descargas'];
+handler.command = /^music$/i;
 
 export default handler;
