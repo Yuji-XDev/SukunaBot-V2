@@ -59,52 +59,72 @@ export default handler;*/
 
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, args, usedPrefix, command }) => {
-  // Validación de entrada
-  if (!args[0]) {
-    await conn.sendMessage(m.chat, { text: `🎧 Ingresa un enlace de una canción de Spotify.\n\n📌 Ejemplo:\n${usedPrefix + command} https://open.spotify.com/track/7HxY2FrvAhEvjxGa3YR93q` }, { quoted: m });
-    return;
+const cacheSpotify = new Set();
+
+let handler = (m, { conn, text, usedPrefix, command }) => {
+  if (!text) {
+    return m.reply(`
+〔 *⛔ FALTA NOMBRE DE LA CANCIÓN* 〕
+ 📀 *Usa el comando así:*
+ ⚙️ ${usedPrefix + command} <nombre de la canción>
+ 🧪 *Ejemplo:* ${usedPrefix + command} Enemy - Imagine Dragons
+    `.trim());
   }
 
-  const url = args[0];
-  if (!url.includes('spotify.com')) {
-    await conn.sendMessage(m.chat, { text: '❌ El enlace no es válido. Debe ser un enlace de Spotify.' }, { quoted: m });
-    return;
-  }
+  m.react('🦠');
 
-  try {
-    const apiURL = `https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(url)}&apikey=sylphy-c519`;
-    const res = await fetch(apiURL);
-    const json = await res.json();
+  fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`)
+    .then(res => res.json())
+    .then(json => {
+      if (!json.result || !json.result.downloadUrl) {
+        throw new Error('❌ No se encontró la canción.');
+      }
 
-    if (!json.status || !json.data?.audio) {
-      await conn.sendMessage(m.chat, { text: '⚠️ No se pudo obtener la canción. Intenta con otro enlace o más tarde.' }, { quoted: m });
-      return;
-    }
+      const { title, artist, duration, downloadUrl } = json.result;
 
-    const { title, artist, duration, image, audio } = json.data;
+      if (cacheSpotify.has(downloadUrl)) {
+        return m.reply(`
+╭━〔 *⚠️ CANCIÓN REPETIDA* 〕━⬣
+┃ 🧠 *Ya fue enviada recientemente.*
+┃ 🧼 *Evita repetir la misma canción.*
+╰━━━━━━━━━━━━━━━━━━━━⬣
+        `.trim());
+      }
 
-    const caption = `
-🎵 *Título:* ${title}
-🎤 *Artista:* ${artist}
-⏱️ *Duración:* ${duration}
-🔗 *Enlace:* ${url}
-`.trim();
+      // Guardar en caché temporal
+      cacheSpotify.add(downloadUrl);
+      setTimeout(() => cacheSpotify.delete(downloadUrl), 60 * 1000); // Auto-limpiar en 1 minuto
 
-    await conn.sendFile(m.chat, image, 'spotify.jpg', caption, m);
-    await conn.sendMessage(m.chat, {
-      audio: { url: audio },
-      mimetype: 'audio/mp4'
-    }, { quoted: m });
+      conn.sendMessage(m.chat, {
+        audio: { url: downloadUrl },
+        mimetype: 'audio/mpeg'
+      }, { quoted: m });
 
-  } catch (e) {
-    console.error('[❌ ERROR SPOTIFY]:', e);
-    await conn.sendMessage(m.chat, { text: '🚫 Error al procesar la canción. Vuelve a intentarlo más tarde.' }, { quoted: m });
-  }
+      m.reply(`
+╭━━━〔 *🔊 SPOTIFY DESCARGADO* 〕━━⬣
+┃ 🎵 *Título:* ${title}
+┃ 🎙️ *Artista:* ${artist}
+┃ ⏱️ *Duración:* ${duration}
+┃ 🧩 *Estado:* ¡Descarga exitosa!
+╰━━━━━━━━━━━━━━━━━━━━⬣
+      `.trim());
+
+      m.react('🎶');
+    })
+    .catch(err => {
+      console.error(err);
+      m.reply(`
+╭━━〔 *⚠️ ERROR* 〕━━⬣
+┃ 😿 No se pudo obtener la canción.
+┃ 📡 Revisa el nombre o intenta más tarde.
+╰━━━━━━━━━━━━━━━━━━━━⬣
+      `.trim());
+      m.react('❌');
+    });
 };
 
-handler.help = ['music'].map(v => v + ' <enlace>');
+handler.help = ['music *<nombre>*'];
 handler.tags = ['descargas'];
-handler.command = /^music$/i;
+handler.command = ['music'];
 
 export default handler;
