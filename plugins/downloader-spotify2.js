@@ -66,48 +66,28 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     return m.reply(`
 ╭━━〔 *⛔ 𝙁𝘼𝙇𝙏𝘼 𝙀𝙇 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀 𝙇𝘼 𝘾𝘼𝙉𝘾𝙄𝙊𝙉* 〕━━⬣
 ┃ 📀 Usa el comando así:
-┃ 🧪 ${usedPrefix + command} <nombre>
+┃ ⚙️ ${usedPrefix + command} <nombre de la canción>
 ┃ 💿 Ejemplo: ${usedPrefix + command} Enemy - Imagine Dragons
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-    `);
+    `.trim());
   }
 
   m.react('🎧');
 
   try {
-    let res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
-    let json = await res.json();
+    const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
+    const json = await res.json();
 
- 
-    if (!json?.result?.downloadUrl) {
-      let fallback = await fetch(`https://api.lolhuman.xyz/api/spotifysearch?apikey=GataDios&query=${encodeURIComponent(text)}`);
-      let search = await fallback.json();
-      if (!search.result || !search.result[0]?.link) throw '❌ No se pudo encontrar la canción.';
-
-      let link = search.result[0].link;
-      let backup = await fetch(`https://api.stellarwa.xyz/dow/spotify?url=${link}&apikey=stellar-7SQpl4Ah`);
-      let data = await backup.json();
-      if (!data.datos?.download) throw '❌ No se pudo descargar la canción.';
-
-      json = {
-        result: {
-          title: data.datos.título,
-          artist: data.datos.artista,
-          duration: data.datos.duración,
-          thumbnail: data.datos.imagen,
-          downloadUrl: data.datos.download
-        }
-      };
-    }
+    if (!json.result || !json.result.downloadUrl) throw new Error('❌ No se encontró la canción.');
 
     const { title, artist, duration, downloadUrl, thumbnail } = json.result;
 
     if (cacheSpotify.has(downloadUrl)) {
       return m.reply(`
 ╭━〔 *⚠️ 𝘾𝘼𝙉𝘾𝙄Ó𝙉 𝙍𝙀𝙋𝙀𝙏𝙄𝘿𝘼* 〕━⬣
-┃ 🧠 Ya fue enviada recientemente
+┃ 🧠 Ya fue enviada recientemente.
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-      `);
+      `.trim());
     }
 
     cacheSpotify.add(downloadUrl);
@@ -121,22 +101,16 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: `🌴 Descarga de Spotify completa`,
+          body: `🎵 ${artist} • ⏱️ ${duration}`,
           thumbnail: await (await fetch(thumbnail)).buffer(),
-          mediaType: 1,
-          renderLargerThumbnail: true
+          mediaType: 2,
+          showAdAttribution: true,
+          renderLargerThumbnail: true,
+          sourceUrl: 'https://open.spotify.com/'
         }
-      }
+      },
+      caption: `🎧 *${title}*\n🎙️ ${artist}\n⏱️ ${duration}`
     }, { quoted: m });
-
-    await m.reply(`
-╭━━━〔 *🎶 𝙎𝙋𝙊𝙏𝙄𝙁𝙔 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝘿𝘼* 〕━━⬣
-┃ 🎵 Título: *${title}*
-┃ 🎙️ Artista: *${artist}*
-┃ ⏱️ Duración: *${duration}*
-┃ ✅ Estado: Descarga exitosa
-╰━━━━━━━━━━━━━━━━━━━━⬣
-    `);
 
     m.react('✅');
   } catch (err) {
@@ -146,13 +120,13 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 ┃ 😿 No se pudo obtener la canción.
 ┃ 📡 Revisa el nombre o intenta más tarde.
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-    `);
+    `.trim());
     m.react('❌');
   }
 };
 
-handler.help = ['music'];
+handler.help = ['spotifydl *<nombre>*'];
 handler.tags = ['descargas'];
-handler.command = ['music'];
+handler.command = ['spotifydl'];
 
 export default handler;
