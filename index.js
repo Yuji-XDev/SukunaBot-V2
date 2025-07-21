@@ -47,7 +47,7 @@ align: 'center',
 colors: ['magentaBright']
 })
 
-say(`Developed By • Dev.Shadow 🖍️`, {
+say(`Developed By • 🇦🇱 Dev.Shadow 🖍️`, {
 font: 'console',
 align: 'center',
 colors: ['blueBright']
