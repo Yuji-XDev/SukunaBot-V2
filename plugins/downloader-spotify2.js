@@ -60,34 +60,46 @@ export default handler;*/
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
+  // Validación de entrada
   if (!args[0]) {
-    await conn.sendMessage(m.chat, { text: `🎧 Ingresa el enlace de una canción de Spotify.\n\n📌 Ejemplo:\n${usedPrefix + command} https://open.spotify.com/track/7HxY2FrvAhEvjxGa3YR93q` }, { quoted: m });
+    await conn.sendMessage(m.chat, { text: `🎧 Ingresa un enlace de una canción de Spotify.\n\n📌 Ejemplo:\n${usedPrefix + command} https://open.spotify.com/track/7HxY2FrvAhEvjxGa3YR93q` }, { quoted: m });
     return;
   }
 
   const url = args[0];
-  if (!url.includes('spotify.com')) return;
+  if (!url.includes('spotify.com')) {
+    await conn.sendMessage(m.chat, { text: '❌ El enlace no es válido. Debe ser un enlace de Spotify.' }, { quoted: m });
+    return;
+  }
 
   try {
-    const api = `https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(url)}&apikey=sylphy-c519`;
-    const res = await fetch(api);
+    const apiURL = `https://api.sylphy.xyz/download/spotify?url=${encodeURIComponent(url)}&apikey=sylphy-c519`;
+    const res = await fetch(apiURL);
     const json = await res.json();
 
-    if (!json.status || !json.data?.audio) return;
+    if (!json.status || !json.data?.audio) {
+      await conn.sendMessage(m.chat, { text: '⚠️ No se pudo obtener la canción. Intenta con otro enlace o más tarde.' }, { quoted: m });
+      return;
+    }
 
     const { title, artist, duration, image, audio } = json.data;
 
-    let caption = `
+    const caption = `
 🎵 *Título:* ${title}
 🎤 *Artista:* ${artist}
 ⏱️ *Duración:* ${duration}
 🔗 *Enlace:* ${url}
 `.trim();
 
-    await conn.sendFile(m.chat, image, 'cover.jpg', caption, m); // Imagen
-    await conn.sendMessage(m.chat, { audio: { url: audio }, mimetype: 'audio/mp4' }, { quoted: m });
+    await conn.sendFile(m.chat, image, 'spotify.jpg', caption, m);
+    await conn.sendMessage(m.chat, {
+      audio: { url: audio },
+      mimetype: 'audio/mp4'
+    }, { quoted: m });
+
   } catch (e) {
-    console.error(e);
+    console.error('[❌ ERROR SPOTIFY]:', e);
+    await conn.sendMessage(m.chat, { text: '🚫 Error al procesar la canción. Vuelve a intentarlo más tarde.' }, { quoted: m });
   }
 };
 
