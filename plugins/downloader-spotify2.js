@@ -65,21 +65,39 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
   if (!text) {
     return m.reply(`
 ╭━━〔 *⛔ 𝙁𝘼𝙇𝙏𝘼 𝙀𝙇 𝙉𝙊𝙈𝘽𝙍𝙀 𝘿𝙀 𝙇𝘼 𝘾𝘼𝙉𝘾𝙄𝙊𝙉* 〕━━⬣
-┃ 📀 𝙐𝙨𝙖 𝙚𝙡 𝙘𝙤𝙢𝙖𝙣𝙙𝙤 𝙖𝙨í:
+┃ 📀 Usa el comando así:
 ┃ 🧪 ${usedPrefix + command} <nombre>
-┃ 💿 𝙀𝙟𝙚𝙢𝙥𝙡𝙤: ${usedPrefix + command} Enemy - Imagine Dragons
+┃ 💿 Ejemplo: ${usedPrefix + command} Enemy - Imagine Dragons
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-    `.trim());
+    `);
   }
 
   m.react('🎧');
 
   try {
-    const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
-    const json = await res.json();
+    let res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
+    let json = await res.json();
 
-    if (!json.result || !json.result.downloadUrl) {
-      throw new Error('❌ No se encontró la canción.');
+ 
+    if (!json?.result?.downloadUrl) {
+      let fallback = await fetch(`https://api.lolhuman.xyz/api/spotifysearch?apikey=GataDios&query=${encodeURIComponent(text)}`);
+      let search = await fallback.json();
+      if (!search.result || !search.result[0]?.link) throw '❌ No se pudo encontrar la canción.';
+
+      let link = search.result[0].link;
+      let backup = await fetch(`https://api.stellarwa.xyz/dow/spotify?url=${link}&apikey=stellar-7SQpl4Ah`);
+      let data = await backup.json();
+      if (!data.datos?.download) throw '❌ No se pudo descargar la canción.';
+
+      json = {
+        result: {
+          title: data.datos.título,
+          artist: data.datos.artista,
+          duration: data.datos.duración,
+          thumbnail: data.datos.imagen,
+          downloadUrl: data.datos.download
+        }
+      };
     }
 
     const { title, artist, duration, downloadUrl, thumbnail } = json.result;
@@ -87,9 +105,9 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     if (cacheSpotify.has(downloadUrl)) {
       return m.reply(`
 ╭━〔 *⚠️ 𝘾𝘼𝙉𝘾𝙄Ó𝙉 𝙍𝙀𝙋𝙀𝙏𝙄𝘿𝘼* 〕━⬣
-┃ 🧠 𝙔𝙖 𝙛𝙪𝙚 𝙚𝙣𝙫𝙞𝙖𝙙𝙖 𝙧𝙚𝙘𝙞𝙚𝙣𝙩𝙚𝙢𝙚𝙣𝙩𝙚
+┃ 🧠 Ya fue enviada recientemente
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-      `.trim());
+      `);
     }
 
     cacheSpotify.add(downloadUrl);
@@ -103,7 +121,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: `🌴 ᴅᴇꜱᴄᴀʀɢᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🌳`,
+          body: `🌴 Descarga de Spotify completa`,
           thumbnail: await (await fetch(thumbnail)).buffer(),
           mediaType: 1,
           renderLargerThumbnail: true
@@ -113,27 +131,27 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
 
     await m.reply(`
 ╭━━━〔 *🎶 𝙎𝙋𝙊𝙏𝙄𝙁𝙔 𝘿𝙀𝙎𝘾𝘼𝙍𝙂𝘼𝘿𝘼* 〕━━⬣
-┃ 🎵 𝙏í𝙩𝙪𝙡𝙤: *${title}*
-┃ 🎙️ 𝘼𝙧𝙩𝙞𝙨𝙩𝙖: *${artist}*
-┃ ⏱️ 𝘿𝙪𝙧𝙖𝙘𝙞ó𝙣: *${duration}*
-┃ 🧩 𝙀𝙨𝙩𝙖𝙙𝙤: 𝘿𝙚𝙨𝙘𝙖𝙧𝙜𝙖 𝙚𝙭𝙞𝙩𝙤𝙨𝙖 ✅
+┃ 🎵 Título: *${title}*
+┃ 🎙️ Artista: *${artist}*
+┃ ⏱️ Duración: *${duration}*
+┃ ✅ Estado: Descarga exitosa
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-    `.trim());
+    `);
 
     m.react('✅');
   } catch (err) {
     console.error(err);
     await m.reply(`
 ╭━━〔 *⚠️ 𝙀𝙍𝙍𝙊𝙍* 〕━━⬣
-┃ 😿 𝙉𝙤 𝙨𝙚 𝙥𝙪𝙙𝙤 𝙤𝙗𝙩𝙚𝙣𝙚𝙧 𝙡𝙖 𝙘𝙖𝙣𝙘𝙞ó𝙣.
-┃ 📡 𝙍𝙚𝙫𝙞𝙨𝙖 𝙚𝙡 𝙣𝙤𝙢𝙗𝙧𝙚 𝙤 𝙞𝙣𝙩𝙚𝙣𝙩𝙖 𝙢á𝙨 𝙩𝙖𝙧𝙙𝙚.
+┃ 😿 No se pudo obtener la canción.
+┃ 📡 Revisa el nombre o intenta más tarde.
 ╰━━━━━━━━━━━━━━━━━━━━⬣
-    `.trim());
+    `);
     m.react('❌');
   }
 };
 
-handler.help = ['music *<nombre>*'];
+handler.help = ['music'];
 handler.tags = ['descargas'];
 handler.command = ['music'];
 
