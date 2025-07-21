@@ -30,35 +30,29 @@ export async function before(m, { conn }) {
       return;
     }
 
-    // Aumentar contador de comandos usados por el usuario
     if (!user.commands) user.commands = 0;
     user.commands += 1;
 
-    // Puedes agregar una respuesta aquí si deseas confirmar que el comando existe
-    // await m.reply(`✅ Comando *${command}* reconocido.`);
     return;
   }
-
+  await m.react('🍰');
   const mensajesNoEncontrado = [
-    `╭─⭑❨ ⚠️ 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐈𝐧𝐯𝐚́𝐥𝐢𝐝𝐨 ❩⭑─╮
-│ 🌸 El comando *"${command}"* no existe.
-│ 🧁 Usa *${usedPrefix}menu* para ver todos los comandos.
+    `╭─⭑❨ ⚠️ 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐈𝐧𝐯𝐚́𝐥𝐢𝐝𝐨 👾 ❩⭑─╮
+│ 🖍️ El comando *"${command}"* no existe.
+│ 🍰 Usa *${usedPrefix}menu* para ver todos los comandos.
 ╰────────────────────────╯`,
 
-    `╭─⭑❨ 💫 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐍𝐨 𝐄𝐧𝐜𝐨𝐧𝐭𝐫𝐚𝐝𝐨 ❩⭑─╮
-│ 🪷 *"${command}"* no está disponible en el sistema.
-│ 🫧 Revisa el menú con *${usedPrefix}menu*.
-╰────────────────────────╯`,
+    `⭑❨ 💫 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐍𝐨 𝐄𝐧𝐜𝐨𝐧𝐭𝐫𝐚𝐝𝐨 ❩⭑
+ 🪷 *"${command}"* no está disponible en el sistema.
+ 🫧 Revisa el menú con *${usedPrefix}menu*.`,
 
-    `╭─⭑❨ 🐰 𝐄𝐫𝐫𝐨𝐫 𝐝𝐞 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 ❩⭑─╮
-│ 🐚 El comando *"${command}"* no forma parte del bot.
-│ 🍡 Usa *${usedPrefix}menu* para orientarte mejor.
-╰────────────────────────╯`,
+    `⭑❨ 🐰 𝐄𝐫𝐫𝐨𝐫 𝐝𝐞 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 🌴 ❩⭑
+> 🌾 El comando *"${command}"* no forma parte del bot.
+> 🍰 Usa *${usedPrefix}menu* para orientarte mejor.`,
 
-    `╭─⭑❨ 🌙 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐃𝐞𝐬𝐜𝐨𝐧𝐨𝐜𝐢𝐝𝐨 ❩⭑─╮
-│ 🧸 No se encontró *"${command}"* en la lista de comandos.
-│ 🦢 Consulta el menú con *${usedPrefix}menu*.
-╰────────────────────────╯`,
+    `⭑❨ 🌳 𝐂𝐨𝐦𝐚𝐧𝐝𝐨 𝐃𝐞𝐬𝐜𝐨𝐧𝐨𝐜𝐢𝐝𝐨 🌳 ❩⭑
+> 🧸 No se encontró *"${command}"* en la lista de comandos.
+> 🌳 Consulta el menú con *${usedPrefix}menu*.`,
 
     `『⛔』 El comando *${usedPrefix + command}* no existe.\nPara ver la lista de comandos usa:\n» *${usedPrefix}help*`
   ];
@@ -72,11 +66,11 @@ export async function before(m, { conn }) {
       externalAdReply: {
         title: 'Dev.Shadow 🇦🇱',
         body: '🌾◌*̥₊ Sukuna MD ◌❐🎋༉',
-        thumbnailUrl: avatar,
+        thumbnailUrl: 'https://files.catbox.moe/mez710.jpg',
         sourceUrl: 'https://github.com/Yuji-XDev',
         mediaType: 1,
         renderLargerThumbnail: true
       }
     }
-  }, { quoted: m });
+  }, { quoted: fkontak });
 }
