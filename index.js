@@ -44,7 +44,7 @@ console.log(chalk.bold.redBright(`\n✰ Iniciando SukunaBot-V2 ✰\n`))
 say('Sukuna Bot', {
 font: 'block',
 align: 'center',
-colors: ['yellowBright']
+colors: ['green', 'magenta']
 })
 
 say(`Developed By • 🇦🇱 Dev.Shadow 🖍️`, {
