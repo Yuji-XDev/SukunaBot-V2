@@ -30,14 +30,14 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, co
     `┃`,
     `┃ 🕷️ *Grupo:* ${grupo}`,
     `┃ 👥 *Miembros:* ${participants.length}`,
-    `╰⊰━━━━━━⊱⬣`
+    `┃`
   ];
 
   for (const user of participants) {
-    textoFinal.push(`✦ @${user.id.split('@')[0]}`);
+    textoFinal.push(`┃ ✦ @${user.id.split('@')[0]}`);
   }
 
-  textoFinal.push(`╭─〔 🩸 𝙁𝙄𝙉 𝘿𝙀 𝙇𝘼 𝙄𝙉𝙑𝙊𝘾𝘼𝘾𝙄Ó𝙉 🩸 〕─╮`);
+  textoFinal.push(`╰⊰━━━━━━⊱⬣\n> ${wm}`);
 
   await conn.sendMessage(m.chat, {
     text: textoFinal.join('\n'),
