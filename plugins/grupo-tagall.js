@@ -22,7 +22,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, co
 ╰━━━━━━━━━━━━━━━━━━⬣`.trim();
 
   let textoFinal = [
-    `╭──〔 ⚡ 𝙎𝙐𝙆𝙐𝙉𝘼 𝘽𝙊𝙏 𝙄𝙉𝙑𝙊𝘾𝘼𝙏𝙄𝙊𝙉 ⚡ 〕──╮`,
+    `╭─〔 ⚡ 𝙎𝙐𝙆𝙐𝙉𝘼 𝘽𝙊𝙏 𝙄𝙉𝙑𝙊𝘾𝘼𝙏𝙄𝙊𝙉 🌳 〕─╮`,
     `┃ 🔱 𝐋𝐥𝐚𝐦𝐚𝐝𝐨 𝐝𝐞 𝐥𝐚𝐬 𝐬𝐨𝐦𝐛𝐫𝐚𝐬…`,
     `┃`,
     `┃ 📣 *MENSAJE:*`,
@@ -30,7 +30,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, co
     `┃`,
     `┃ 🕷️ *Grupo:* ${grupo}`,
     `┃ 👥 *Miembros:* ${participants.length}`,
-    `┃`
+    `┃━━━━━━━━━━━━━━━━━━⬣`
   ];
 
   for (const user of participants) {
