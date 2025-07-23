@@ -1,4 +1,4 @@
-import fetch from "node-fetch";
+/*import fetch from "node-fetch";
 import yts from 'yt-search';
 import axios from "axios";
 
@@ -58,7 +58,7 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
 
  if (command === 'play' || command === 'mp3'  || command === 'playaudio') {
   try {
-    const apiAudioUrl = `https://api.stellarwa.xyz/dow/ytmp3?url=${url}&apikey=diamond`;
+    const apiAudioUrl = `https://api.stellarwa.xyz/dow/ytmp3?url=${url}&apikey=stellar-7SQpl4Ah`;
     const response = await fetch(apiAudioUrl);
     const json = await response.json()
     const { title, dl } = json.data
@@ -121,4 +121,4 @@ function formatViews(views) {
     return `${(views / 1_000).toFixed(1)}k (${views.toLocaleString()})`;
   }
   return views.toString();
-}
+}*/

@@ -144,9 +144,9 @@ const caption = `*🌳  YOUTUBE PLAY 🎬*
   }
 };
 
-handler.help = ['play8 *<texto>*'];
+handler.help = ['play *<texto>*'];
 handler.tags = ['downloader'];
-handler.command = ['play8'];
+handler.command = ['play', 'play2'];
 export default handler;
 
 async function searchVideos(query) {
