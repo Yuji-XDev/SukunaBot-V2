@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, command, usedPrefix }) => {
   if (usedPrefix.toLowerCase() === 'a') return;
 
-  const customEmoji = global.db.data.chats[m.chat]?.customEmoji || '🌲';
+  const customEmoji = global.db.data.chats[m.chat]?.customEmoji || '🌑';
   await m.react(customEmoji);
 
   if (!(isAdmin || isOwner)) {
@@ -11,35 +11,42 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, co
     throw false;
   }
 
-  const pesan = args.length ? args.join(' ') : 'Pu***';
-  const mj = `°◦⃝📑 *𝙼𝙴𝙽𝚂𝙰𝙹𝙴:*\n│ ${pesan}`;
-  const groupName = await conn.getName(m.chat);
+  const mensaje = args.length ? args.join(' ') : '⚠️ *No se proporcionó mensaje.*';
+  const grupo = await conn.getName(m.chat);
 
- 
-  let teks = [
-  `╭───〔 🔱 𝙎𝙐𝙆𝙐𝙉𝘼 𝘽𝙊𝙏 ⚡ 〕───╮`,
-  `│ 🩸 𝙈𝙀𝙉𝘾𝙄𝙊𝙉 𝘿𝙀𝙈𝙊𝙉í𝘼𝘾𝘼`,
-  `│ 🕷️ 𝙈𝙄𝙀𝙈𝘽𝙍𝙊𝙎: *${participants.length}*`,
-  `│ 🕸️ 𝙂𝙍𝙐𝙋𝙊: *${groupName}*`,
-  `├⫸ 👁️‍🗨️ ${mj}`,
-  `╰─➤`
+  const encabezado = `
+╭━━━〔 ⚠️ 𝙈𝙀𝙉𝙎𝘼𝙅𝙀 𝙋𝘼𝙍𝘼 𝙏𝙊𝘿𝙊𝙎 ⚠️ 〕━━⬣
+┃ 💬 *𝙈𝙀𝙉𝙎𝘼𝙅𝙀:* ${mensaje}
+┃ 🧿 *𝙂𝙍𝙐𝙋𝙊:* ${grupo}
+┃ 👥 *𝙈𝙄𝙀𝙈𝘽𝙍𝙊𝙎:* ${participants.length}
+╰━━━━━━━━━━━━━━━━━━⬣`.trim();
+
+  let textoFinal = [
+    `╭──〔 ⚡ 𝙎𝙐𝙆𝙐𝙉𝘼 𝘽𝙊𝙏 𝙄𝙉𝙑𝙊𝘾𝘼𝙏𝙄𝙊𝙉 ⚡ 〕──╮`,
+    `┃ 🔱 𝐋𝐥𝐚𝐦𝐚𝐝𝐨 𝐝𝐞 𝐥𝐚𝐬 𝐬𝐨𝐦𝐛𝐫𝐚𝐬…`,
+    `┃`,
+    `┃ 📣 *MENSAJE:*`,
+    `┃ ⤷ ${mensaje}`,
+    `┃`,
+    `┃ 🕷️ *Grupo:* ${grupo}`,
+    `┃ 👥 *Miembros:* ${participants.length}`,
+    `╰⊰━━━━━━⊱⬣`
   ];
 
-  for (const mem of participants) {
-    teks.push(`│ യ ׄ${customEmoji}˚ @${mem.id.split('@')[0]}`);
+  for (const user of participants) {
+    textoFinal.push(`✦ @${user.id.split('@')[0]}`);
   }
 
-  teks.push(`╰──────────────༓`);
-  const finalText = teks.join('\n');
+  textoFinal.push(`╭─〔 🩸 𝙁𝙄𝙉 𝘿𝙀 𝙇𝘼 𝙄𝙉𝙑𝙊𝘾𝘼𝘾𝙄Ó𝙉 🩸 〕─╮`);
 
   await conn.sendMessage(m.chat, {
-    text: finalText,
+    text: textoFinal.join('\n'),
     mentions: participants.map(p => p.id),
     contextInfo: {
       mentionedJid: participants.map(p => p.id),
       externalAdReply: {
-        title: '✧ 𝐈𝐍𝐕𝐎𝐂𝐀𝐍𝐃𝐎 𝐄𝐒𝐏𝐈𝐑𝐈𝐓𝐔𝐒ꦿ✧',
-        body: '🌴 ʙᴏᴛ ᴅᴇ ᴛʜᴇ_ʙʟᴀᴄᴋ ⚡',
+        title: '✧ 𝙄𝙉𝙑𝙊𝘾𝘼𝙉𝘿𝙊 𝙀𝙎𝙋𝙄𝙍𝙄𝙏𝙐𝙎 ꦿ✧',
+        body: club,
         thumbnailUrl: logo,
         mediaType: 1,
         showAdAttribution: true,
@@ -50,7 +57,7 @@ const handler = async (m, { isOwner, isAdmin, conn, text, participants, args, co
   }, { quoted: fkontak });
 };
 
-handler.help = ['todos *<mensaje opcional>*'];
+handler.help = ['todos *<mensaje>*'];
 handler.tags = ['grupo'];
 handler.command = ['todos', 'invocar', 'tagall', 'marcar'];
 handler.admin = true;
