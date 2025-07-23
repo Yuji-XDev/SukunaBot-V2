@@ -1,6 +1,6 @@
 let handler = async (m, { conn, text, command }) => {
   const user = global.db.data.users[m.sender]
-
+  command = command || 'unreg'
 
   if (!text) {
     const caption = `╭━━〔 *🗑️ Confirmación de Eliminación* 〕━━⬣
@@ -12,8 +12,8 @@ let handler = async (m, { conn, text, command }) => {
 ╰━━━━━━━━━━━━━━━━━━━━⬣`;
 
     const buttons = [
-      { buttonId: `${command} sí`, buttonText: { displayText: '✅ Sí, borrar' }, type: 1 },
-      { buttonId: `${command} no`, buttonText: { displayText: '❌ No, cancelar' }, type: 1 }
+      { buttonId: `#${command} sí`, buttonText: { displayText: '✅ Sí, borrar' }, type: 1 },
+      { buttonId: `#${command} no`, buttonText: { displayText: '❌ No, cancelar' }, type: 1 }
     ];
 
     return await conn.sendMessage(m.chat, {
@@ -23,8 +23,7 @@ let handler = async (m, { conn, text, command }) => {
     }, { quoted: m });
   }
 
-
-  const decision = text.toLowerCase();
+  const decision = text.toLowerCase().split(' ').pop();
   if (decision === 'sí' || decision === 'si') {
     user.registered = false;
     return conn.sendMessage(m.chat, {
