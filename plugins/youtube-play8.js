@@ -3,7 +3,7 @@ import fetch from 'node-fetch';
 import { prepareWAMessageMedia, generateWAMessageFromContent } from '@whiskeysockets/baileys';
 
 const handler = async (m, { conn, args, usedPrefix, command }) => {
-  if (!args[0]) return conn.reply(m.chat, `*❗ Ingresa un título para buscar en YouTube.*\n✧ \`Ejemplo:\` ${usedPrefix}${command} Joji - Ew`, m, rcanal);
+  if (!args[0]) return conn.reply(m.chat, `*❗ Ingresa un título para buscar en YouTube.*\n✧ \`Ejemplo:\` ${usedPrefix}${command} Joji - Ew`, m, fake);
 
   await m.react('🎲');
   try {
@@ -140,7 +140,7 @@ const caption = `*🌳  YOUTUBE PLAY 🎬*
   } catch (e) {
     console.error(e);
     await m.react('✖️');
-    conn.reply(m.chat, '*`Error al buscar el video.`*', m);
+    conn.reply(m.chat, '*`Error al buscar el video.`*', m, fake);
   }
 };
 
