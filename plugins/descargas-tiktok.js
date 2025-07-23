@@ -30,7 +30,32 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
 ╰───────────────⬣`;
 
         if (videoURL) {
-            await conn.sendFile(m.chat, videoURL, "tiktok.mp4", texto, fkontak);
+            //await conn.sendFile(m.chat, videoURL, "tiktok.mp4", texto, fkontak);
+
+            const thumb = await fetch("https://files.catbox.moe/zgvj8c.jpg").then(res => res.buffer());
+
+            await conn.sendFile(
+                m.chat,
+                videoURL,
+                'tiktok.mp4',
+                texto,
+                fkontak,
+                false,
+                {
+                    contextInfo: {
+                        externalAdReply: {
+                            title: "『🔥』ＴＩＫＴＯＫ ＤＥＳＣＡＲＧＡＤＯ",
+                            body: "⛩️ Sᴜᴋᴜɴᴀ ʙᴏᴛ ⛩️",
+                            thumbnail: thumb,
+                            mediaType: 2,
+                            mediaUrl: videoURL,
+                            sourceUrl: videoURL,
+                            renderLargerThumbnail: true,
+                            showAdAttribution: true
+                        }
+                    }
+                }
+            );
         } else {
             return conn.reply(m.chat, "🎭 No se pudo descargar. Tal vez no estás listo.", m);
         }
