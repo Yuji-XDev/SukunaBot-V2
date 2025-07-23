@@ -57,7 +57,7 @@ author = author || 'no encontrado'
     await conn.reply(m.chat, infoMessage, m, JT)    
     if (command === 'play' || command === 'playaudio') {
       try {
-        const api = await (await fetch(`https://api.vreden.my.id/api/ytmp3?url=${url}`)).json()
+        const api = await (await fetch(`https://api.stellarwa.xyz/dow/ytmp3?url=${url}&apikey=diamond`)).json()
         const resulta = api.result
         const result = resulta.download.url    
         if (!result) throw new Error('⚠ El enlace de audio no se generó correctamente.')
@@ -67,7 +67,7 @@ author = author || 'no encontrado'
       }
     } else if (command === 'play2' || command === 'mp4') {
       try {
-        const response = await fetch(`https://api.vreden.my.id/api/ytmp4?url=${url}`)
+        const response = await fetch(`https://api.stellarwa.xyz/dow/ytmp4?url=${url}&apikey=diamond`)
         const json = await response.json()
         await conn.sendFile(m.chat, json.data.url, json.title + '.mp4', title, m)
       } catch (e) {
