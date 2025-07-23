@@ -6,7 +6,7 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
     }
 
     try {
-        await conn.reply(m.chat, `🌪️\n> ⟢🏞️ 𝙀𝙣 𝙥𝙧𝙤𝙘𝙚𝙨𝙤… 𝙏𝙪 𝙨𝙤𝙡𝙞𝙘𝙞𝙩𝙪𝙙 𝙚𝙨𝙩á 𝙨𝙞𝙚𝙣𝙙𝙤 𝙖𝙩𝙚𝙣𝙙𝙞𝙙𝙖. 𝙋𝙤𝙧 𝙛𝙖𝙫𝙤𝙧, 𝙢𝙖𝙣𝙩é𝙣 𝙡𝙖 𝙘𝙖𝙡𝙢𝙖.`, m);
+        await conn.reply(m.chat, `🌳 𝙀𝙣 𝙥𝙧𝙤𝙘𝙚𝙨𝙤… 𝙏𝙪 𝙨𝙤𝙡𝙞𝙘𝙞𝙩𝙪𝙙 𝙚𝙨𝙩á 𝙨𝙞𝙚𝙣𝙙𝙤 𝙖𝙩𝙚𝙣𝙙𝙞𝙙𝙖. 𝙋𝙤𝙧 𝙛𝙖𝙫𝙤𝙧, 𝙢𝙖𝙣𝙩é𝙣 𝙡𝙖 𝙘𝙖𝙡𝙢𝙖.`, m);
 
         const tiktokData = await tiktokdl(args[0]);
 
@@ -16,9 +16,7 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
 
         const videoURL = tiktokData.data.play;
         const data = tiktokData.data;
-
-        if (videoURL) {
-            await conn.sendFile(m.chat, videoURL, "tiktok.mp4", `╭─❍「 TikTok Downloader 」
+        const texto = `╭─❍「 TikTok Downloader 」
 🌴 *Descripción:* ${data.title || 'Sin descripción'}
 
 💞 *Likes:* ${data.digg_count || 0}
@@ -29,7 +27,10 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
 🖼️ *Calidad:* ${data.play.includes('hd') ? 'HD' : 'Estándar'}
 
 ⟢ 🌪️ 𝑨𝒒𝒖𝒊 𝒕𝒊𝒆𝒏𝒆𝒔 𝒕𝒖 𝒗𝒊𝒅𝒆𝒐
-╰───────────────⬣`, fkontak);
+╰───────────────⬣`;
+
+        if (videoURL) {
+            await conn.sendFile(m.chat, videoURL, "tiktok.mp4", texto, fkontak);
         } else {
             return conn.reply(m.chat, "🎭 No se pudo descargar. Tal vez no estás listo.", m);
         }
