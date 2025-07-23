@@ -13,17 +13,22 @@ const handler = async (m, { conn, usedPrefix }) => {
     const totalUsers = Object.keys(global.db.data.users).length;
     const totalCommands = Object.values(global.plugins).filter(p => p.help && p.tags).length;
     const user = global.db.data.users[m.sender];
+    const Shadow = [
+      'https://files.catbox.moe/t4p581.mp4',
+      'https://files.catbox.moe/t03mju.jpg'
+    ]
+    const core = Shadow[Math.floor(Math.random() * Shadow.length)] 
 
     const texto = `┏━━━━━━⬣
 ┃ ⌬ 𝗜𝗡𝗙𝗢 𝗗𝗘𝗟 𝗕𝗢𝗧 📟
 ┃ 🧠 \`ᴄʀᴇᴀᴅᴏʀ:\` *[ Dev.Shadow ]*
-┃ 🔗 \`ᴄᴏɴᴛᴀᴄᴛᴏ:\` [ wa.link/z1w9sq ]
-┃ 📁 \`ᴠᴇʀsɪᴏɴ:\` [ 2.2.5 ]
-┃ 👥 \`ᴜsᴜᴀʀɪᴏs:\` [ ${totalUsers} ]
-┃ 📦 \`ᴄᴏᴍᴀɴᴅᴏs:\` [ ${totalCommands} ]
-┃ ⚙️ \`ᴍᴏᴅᴏ:\` [ Privado ]
-┃ 📚 \`ʟɪʙʀᴇʀɪᴀ:\` [ Baileys-MD ]
-┃ 🕰️ \`ᴀᴄᴛɪᴠᴏ:\` [ ${uptime} ]
+┃ 🔗 \`ᴄᴏɴᴛᴀᴄᴛᴏ:\` *[ wa.link/z1w9sq ]*
+┃ 📁 \`ᴠᴇʀsɪᴏɴ:\` *[ 2.2.5 ]*
+┃ 👥 \`ᴜsᴜᴀʀɪᴏs:\` *[ ${totalUsers} ]*
+┃ 📦 \`ᴄᴏᴍᴀɴᴅᴏs:\` *[ ${totalCommands} ]*
+┃ ⚙️ \`ᴍᴏᴅᴏ:\` *[ Privado ]*
+┃ 📚 \`ʟɪʙʀᴇʀɪᴀ:\` *[ Baileys-MD ]*
+┃ 🕰️ \`ᴀᴄᴛɪᴠᴏ:\` *[ ${uptime} ]*
 ┗━━━━━━⬣
 
 ┏━━━━━━⬣
@@ -62,7 +67,7 @@ const handler = async (m, { conn, usedPrefix }) => {
 ╰╌┈─━╌─━╌⃨╼⃛⬥⬥⃛╾⃨╌━─╌━─┈╌╯
 `.trim();
 
-    const image = 'https://files.catbox.moe/35wxsf.jpg';
+    const image = core;
     const buffer = await (await fetch(image)).buffer();
 
     const buttons = [
