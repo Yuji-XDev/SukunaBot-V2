@@ -84,8 +84,8 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
       },
       { quoted: m }*/
       
-      
-     const caption = `*${app.name}*\n> ${club}`;
+     await m.react('⌛'); 
+     const caption = club;
     await conn.sendMessage(m.chat, {
       document: { url: downloadUrl },
       fileName: `${app.name}.apk`,
