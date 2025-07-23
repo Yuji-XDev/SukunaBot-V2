@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+/*import fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, command }) => {
   if (!text || !text.includes('youtu')) {
@@ -34,4 +34,4 @@ handler.help = ['ytmp33 <url>', 'ytmp44 <url>'];
 handler.tags = ['downloader'];
 handler.command = /^ytmp33|ytmp44$/i;
 
-export default handler;
+export default handler;*/
