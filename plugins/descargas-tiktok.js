@@ -32,7 +32,7 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
         if (videoURL) {
             //await conn.sendFile(m.chat, videoURL, "tiktok.mp4", texto, fkontak);
 
-           // const thumb = await fetch("https://files.catbox.moe/zgvj8c.jpg").then(res => res.buffer());
+            const thumb = await fetch("https://files.catbox.moe/zgvj8c.jpg").then(res => res.buffer());
 
             await conn.sendFile(
                 m.chat,
@@ -45,8 +45,8 @@ var handler = async (m, { conn, args, usedPrefix, command }) => {
                     contextInfo: {
                         externalAdReply: {
                             title: "『🔥』ＴＩＫＴＯＫ ＤＥＳＣＡＲＧＡＤＯ",
-                            body: "⛩️ Sᴜᴋᴜɴᴀ ʙᴏᴛ ⛩️",
-                            thumbnail: 'https://files.catbox.moe/zgvj8c.jpg',
+                            body: wm,
+                            thumbnail: thumb,
                             mediaType: 2,
                             mediaUrl: videoURL,
                             sourceUrl: redes,
