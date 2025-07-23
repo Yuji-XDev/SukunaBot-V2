@@ -73,6 +73,7 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
     let { app } = session;
     const downloadUrl = app.download;
     // Enviar el archivo APK como documento
+    /*
     await conn.sendMessage(
       m.chat,
       {
@@ -81,8 +82,28 @@ let handler = async (m, { conn, text, usedPrefix, command }) => {
         fileName: `${app.name}.apk`,
         caption: `🌪️ ${app.name}\n> ⋆⬪࣪ꥈ🥮★ 𝖯𑄜𝗐𝖾𝗋𝖾𝖽 𝖻𝗒 𝖲𝗁⍺𝖽ᦅ𝗐′core 𝖢𝗅𝗎𝖻𓆪`
       },
-      { quoted: m }
-    );
+      { quoted: m }*/
+      
+      
+     const caption = `*${app.name}*\n> ${club}`;
+    await conn.sendMessage(m.chat, {
+      document: { url: downloadUrl },
+      fileName: `${app.name}.apk`,
+      mimetype: 'application/vnd.android.package-archive',
+      caption,
+      thumbnail: app.image,
+      contextInfo: {
+        externalAdReply: {
+          title: app.name,
+          body: bot,
+          mediaUrl: null,
+          sourceUrl: null,
+          thumbnailUrl: app.image,
+          mediaType: 1,
+          renderLargerThumbnail: true
+        }
+      }
+    }, { quoted: m });
     return;
   }
 
