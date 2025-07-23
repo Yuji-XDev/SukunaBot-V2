@@ -13,11 +13,6 @@ const handler = async (m, { conn, usedPrefix }) => {
     const totalUsers = Object.keys(global.db.data.users).length;
     const totalCommands = Object.values(global.plugins).filter(p => p.help && p.tags).length;
     const user = global.db.data.users[m.sender];
-    const Shadow = [
-      'https://files.catbox.moe/t4p581.mp4',
-      'https://files.catbox.moe/t03mju.jpg'
-    ]
-    const core = Shadow[Math.floor(Math.random() * Shadow.length)] 
 
     const texto = `┏━━━━━━⬣
 ┃ ⌬ 𝗜𝗡𝗙𝗢 𝗗𝗘𝗟 𝗕𝗢𝗧 📟
@@ -67,7 +62,7 @@ const handler = async (m, { conn, usedPrefix }) => {
 ╰╌┈─━╌─━╌⃨╼⃛⬥⬥⃛╾⃨╌━─╌━─┈╌╯
 `.trim();
 
-    const image = core;
+    const image = 'https://files.catbox.moe/t03mju.jpg';
     const buffer = await (await fetch(image)).buffer();
 
     const buttons = [

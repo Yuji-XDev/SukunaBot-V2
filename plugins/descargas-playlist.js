@@ -1,65 +1,89 @@
 import yts from 'yt-search';
 
-let handler = async (m, { conn, usedPrefix, text, command}) => {
-    if (!text) {
-        return conn.reply(m.chat,
-            "🌴 *Por favor, escribe el nombre de un video o canal de YouTube.*",
-            m.sender, m
-        );
+let handler = async (m, { conn, usedPrefix, text, command }) => {
+  if (!text) {
+    return conn.reply(m.chat,
+      "🌴 *Por favor, escribe el nombre de un video o canal de YouTube.*",
+      m
+    );
+  }
+
+  try {
+    let result = await yts(text);
+    let ytres = result.videos;
+
+    if (!ytres || ytres.length === 0) {
+      return conn.reply(m.chat, "❌ No se encontraron resultados para tu búsqueda.", m);
     }
 
-    try {
-        let result = await yts(text);
-        let ytres = result.videos;
+    let topResults = ytres.slice(0, 5);
 
-        if (!ytres || ytres.length === 0) {
-            return conn.reply(m.chat, "❌ No se encontraron resultados para tu búsqueda.", m);
-    }
+    let first = topResults[0];
 
-        let listSections = ytres.map(v => ({
-            title: "🔎 𝗥𝗲𝘀𝘂𝗹𝘁𝗮𝗱𝗼 𝗱𝗲 𝗹𝗮 𝗯𝘂𝘀𝗾𝘂𝗲𝗱𝗮",
-            rows: [
-                { 
-                   title: "🎵 Audio",
-                   description: `${v.title} | ${v.timestamp}`,
-                   id: `${usedPrefix}ytmp3 ${v.url}`
-                },
-                { 
-                   title: "🎥 Video",
-                   description: `${v.title} | ${v.timestamp}`, 
-                   id: `${usedPrefix}ytmp4 ${v.url}`
-                },
-                { 
-                   title: "📜 Audio (Doc)",
-                   description: `${v.title} | ${v.timestamp}`,
-                   id: `${usedPrefix}ytmp3doc ${v.url}`
-                },
-                { 
-                   title: "📜 Video (Doc)", 
-                   description: `${v.title} | ${v.timestamp}`, 
-                   id: `${usedPrefix}ytmp4doc ${v.url}`
-                }
-            ]
+    await conn.sendMessage(m.chat, {
+      image: { url: first.thumbnail },
+      caption: `📌 *Resultados para:* "${text}"\n\n` +
+        `🎬 *${first.title}*\n` +
+        `⏱️ Duración: ${first.timestamp}\n` +
+        `📅 Publicado: ${first.ago}\n` +
+        `📺 Canal: ${first.author.name}\n` +
+        `👁️‍🗨️ Vistas: ${first.views.toLocaleString()}\n` +
+        `🔗 URL: ${first.url}`,
+      mentions: [m.sender]
+    }, { quoted: m });
+
+
+    let listSections = topResults.map(v => ({
+      title: `🔎 ${v.title.slice(0, 50)}`,
+      rows: [
+        {
+          title: "🎵 Descargar Audio",
+          description: `Duración: ${v.timestamp} | Visitas: ${v.views.toLocaleString()}`,
+          id: `${usedPrefix}ytmp3 ${v.url}`
+        },
+        {
+          title: "🎥 Descargar Video",
+          description: `Publicado: ${v.ago} | Canal: ${v.author.name}`,
+          id: `${usedPrefix}ytmp4 ${v.url}`
+        },
+        {
+          title: "📄 Audio (Documento)",
+          description: `Audio en formato documento.`,
+          id: `${usedPrefix}ytmp3doc ${v.url}`
+        },
+        {
+          title: "📄 Video (Documento)",
+          description: `Video en formato documento.`,
+          id: `${usedPrefix}ytmp4doc ${v.url}`
+        },
+        {
+          title: "🔗 Ir al video",
+          description: "Abrir en YouTube",
+          id: `${v.url}`
+        }
+      ]
     }));
 
-        await conn.sendList(m.chat,
-            "*📜 Resultados de búsqueda*",
-            `🔍 𝙏𝙚𝙧𝙢𝙞𝙣𝙤: ${text}`,
-            "✅ 𝚂𝙴𝙻𝙴𝙲𝙲𝙸𝙾𝙽𝙴 𝚄𝙽𝙰 𝙾𝙿𝙲𝙸𝙾𝙽:",
-            listSections,
-            m.sender
-        );
-    } catch (e) {
-        await conn.sendButton(m.chat,
-            "⚠️ Ha ocurrido un error. Por favor, repórtalo con el siguiente comando:",
-            `#report ${usedPrefix + command}`,
-            null,
-            [["Enviar reporte", `#report ${usedPrefix + command}`]],
-             m
-        );
-           console.error(e);
-        }
-    };
+
+    await conn.sendList(m.chat,
+      "📜 *Resultados de búsqueda en YouTube*",
+      `🔍 *Término buscado:* ${text}\n🎬 *Total encontrados:* ${ytres.length}\n📄 *Mostrando:* ${topResults.length}`,
+      "✅ *Seleccione una opción:*",
+      listSections,
+      m.sender
+    );
+
+  } catch (e) {
+    console.error(e);
+    await conn.sendButton(m.chat,
+      "⚠️ Ocurrió un error al realizar la búsqueda.\nPuedes reportarlo para que lo revisemos.",
+      `🛠️ Comando: ${usedPrefix + command}`,
+      null,
+      [["📩 Reportar error", `#report ${usedPrefix + command}`]],
+      m
+    );
+  }
+};
 
 handler.help = ['playlist'];
 handler.tags = ['descargas'];
