@@ -1,13 +1,12 @@
-// codigo creado por Black.OFC 
+// Código mejorado por Black.OFC 🔥
 
 import axios from 'axios';
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
   const inputUrl = args[0];
 
- 
   if (!inputUrl || !inputUrl.includes('f-droid.org')) {
-    return m.reply(`❗ *Debes proporcionar un enlace de F-Droid válido:*\n\nEjemplo:\n${usedPrefix + command} https://f-droid.org/packages/org.mozilla.firefox`);
+    return m.reply(`❗ *Debes proporcionar un enlace de F-Droid válido:*\n\nEjemplo:\n${usedPrefix + command} https://f-droid.org/packages/com.termux.api/`);
   }
 
   try {
@@ -18,18 +17,20 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 
     if (!data || !data.downloadLink) throw '❌ No se encontró el archivo APK.';
 
-    let packageName = inputUrl.split('/').filter(x => x.includes('.'))?.pop() || 'app';
-    let versionName = data.version || '1.0';
-    let fileName = `${packageName}_v${versionName}.apk`;
+    const packageName = inputUrl.split('/').filter(x => x.includes('.')).pop() || 'app';
+    const appNameRaw = data.name || data.title || packageName;
+    const appName = appNameRaw.replace(/[^a-zA-Z0-9\s]/g, '').replace(/\s+/g, '_'); // Limpia caracteres raros
+    const versionName = data.version || '1.0';
+    const fileName = `${appName}_v${versionName}.apk`;
 
     let texto = `╭━━━⬣ *📦 APP ENCONTRADA*
-┃ 📌 *Versión:* ${data.version || 'desconocido'}
-┃ 📅 *Agregada:* ${data.addedOn || 'desconocido'}
-┃ 📥 *Tamaño:* ${data.apkSize || '1 GB'}
-┃ 📱 *Requiere:* ${data.requirement || 'desconocido'}
+┃ 🧩 *Nombre:* ${data.name || 'Desconocido'}
+┃ 📌 *Versión:* ${data.version || 'Desconocido'}
+┃ 📅 *Agregada:* ${data.addedOn || 'Desconocido'}
+┃ 📥 *Tamaño:* ${data.apkSize || 'Desconocido'}
+┃ 📱 *Requiere:* ${data.requirement || 'Desconocido'}
 ┃ 🔐 *Permisos:* ${data.permissions || 'Ninguno'}
-╰━━━━━━━━━━━━⬣
-`.trim();
+╰━━━━━━━━━━━━⬣`.trim();
 
     await conn.sendMessage(m.chat, {
       document: { url: data.downloadLink },
@@ -40,11 +41,12 @@ let handler = async (m, { conn, args, usedPrefix, command }) => {
 
   } catch (e) {
     console.error(e);
-    await m.reply('💛 Error al obtener la app. Asegúrate de que el enlace de F-Droid es válido.');
+    await m.reply('💛 Error al obtener la app. Asegúrate de que el enlace de F-Droid es válido o vuelve a intentarlo.');
   }
 };
 
 handler.help = ['apkf', 'fdroid'];
 handler.tags = ['descargas'];
 handler.command = ['apkf', 'fdroid'];
+
 export default handler;
