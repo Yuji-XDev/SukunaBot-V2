@@ -106,7 +106,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
         externalAdReply: {
           title: `${title}`,
           body: '🌟 ᴅᴇsᴄᴀʀɢᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🎶',
-          thumbnail: await (await fetch(cover)).buffer(),
+          thumbnail: icono,
           mediaType: 1,
           renderLargerThumbnail: true
         }
