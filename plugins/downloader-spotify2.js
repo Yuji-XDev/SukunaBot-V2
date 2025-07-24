@@ -104,11 +104,12 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       ptt: false,
       contextInfo: {
         externalAdReply: {
-          title: `${title}`,
+          title: title,
           body: '🌟 ᴅᴇsᴄᴀʀɢᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🎶',
-          thumbnail: icono,
+          thumbnailUrl: cover,
           mediaType: 1,
-          renderLargerThumbnail: true
+          renderLargerThumbnail: true,
+          sourceUrl: url
         }
       }
     }, { quoted: m });
@@ -126,7 +127,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   }
 };
 
-handler.help = ['music <link>'];
+handler.help = ['music <nombre>'];
 handler.tags = ['descargas'];
 handler.command = ['music'];
 handler.register = true;
