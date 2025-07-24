@@ -1,7 +1,6 @@
 let handler = async (m, { conn }) => {
 
- // let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
-  let img = 'https://api.eliasaryt.pro/api/nsfw/hentai';
+  let img = 'https://dark-core-api.vercel.app/api/random/ass?key=api';
   let text = '🍑 *Disfruta tu ración de... arte digital 🙈*';
 
   conn.sendMessage(m.chat, {
