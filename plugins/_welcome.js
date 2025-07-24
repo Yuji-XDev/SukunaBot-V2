@@ -102,7 +102,7 @@ export async function before(m, { conn, participants, groupMetadata }) {
   }
 
   if (chat?.welcome && (m.messageStubType == 28 || m.messageStubType == 32)) {
-    let bye = `╭─⃟🌹❖ 𝐃𝐄𝐒𝐏𝐈𝐃𝐈𝐄𝐍𝐃𝐎𝐒 ❖🌹⃟─╮
+    let bye = `╭─⃟🌹❖ 𝐇𝐀𝐒𝐓𝐀 𝐏𝐑𝐎𝐍𝐓𝐎 ❖🌹⃟─╮
 ┃
 ┃ 💔 *Se ha ido:* @${numeroUsuario}
 ┃ 👥 *Miembros restantes:* ${groupSize}
