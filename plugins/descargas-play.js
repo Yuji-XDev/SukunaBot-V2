@@ -22,28 +22,15 @@ const handler = async (m, { conn, text, usedPrefix, command }) => {
     const vistas = formatViews(views);
     const canal = author.name || 'Desconocido';
 
-    const textoinfo = [
-          `╭━〔 乂 YOUTUBE - PLAY 〕━⬣
- *${title}*
+    const infoMessage = `╭━〔 乂 YOUTUBE - PLAY 〕━⬣
+≡ 🎄 *\`Titulo:\`* ${title}
 
-≡ ⏱ *Duración:* ${timestamp}
-≡ 📺 *Canal:* ${canal}
-≡ 👁️ *Vistas:* ${vistas}
-≡ 📆 *Publicado:* ${ago}
-≡ 🔗 *Link:* ${url}
-╰━━━━━━━━━━━━⬣`
-          `≡ 🎄 *Titulo:* ${title}
 ≡ 🌵 *\`Duración:\`* ${timestamp}
 ≡ 🌿 *\`Canal:\`* ${canal}
 ≡ 🍁 *\`Vistas:\`* ${vistas}
 ≡ 🌳 *\`Publicado:\`* ${ago}
-≡ 🔗 *\`Link:\`* ${url}`
-             
-    ];
-
-    const infoMessage = textoinfo[Math.floor(Math.random() * textoinfo.length)];
-
-    //const infoMessage = ``;
+≡ 🔗 *\`Link:\`* ${url}
+╰━━━━━━━━━━━━⬣`;
 
     const thumb = (await conn.getFile(thumbnail))?.data;
 
