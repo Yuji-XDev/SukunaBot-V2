@@ -56,7 +56,6 @@ handler.limit = 2;
 
 export default handler;*/
 
-
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, args, command, usedPrefix }) => {
@@ -65,7 +64,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
     return m.reply(
       `╭━━〔 *🔊 Reproductor de Música* 〕━━⬣
 ┃ ✨ *Uso correcto del comando:*
-┃ ➤ ${usedPrefix + command} shakira soltera
+┃ ➤ ${usedPrefix}${command} shakira soltera
 ╰━━━━━━━━━━━━━━━━━━⬣`
     );
   }
@@ -127,9 +126,11 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   }
 };
 
+
+handler.command = /^((music|song|playmusic|spotify))$/i;
+
 handler.help = ['music <nombre>'];
 handler.tags = ['descargas'];
-handler.command = ['music'];
 handler.register = true;
 
 export default handler;
