@@ -1,75 +1,25 @@
-/*mport fetch from 'node-fetch';
-
-const handler = async (m, { conn, text, command }) => {
-  if (!text || !text.includes('spotify.com')) {
-    return m.reply('🎧 *Por favor, ingresa un enlace válido de Spotify.*');
-  }
-
-  await m.react('⏳');
-
-  try {
-    const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
-    if (!res.ok) throw new Error();
-
-    const json = await res.json();
-    if (!json.result?.downloadUrl) throw new Error();
-
-    const info = json.result;
-
-    let thumb = null;
-    try {
-      const img = await conn.getFile(info.cover);
-      thumb = img?.data;
-    } catch (e) {
-      console.warn('No se pudo obtener la portada.');
-    }
-
-    await conn.sendMessage(m.chat, {
-      audio: { url: info.downloadUrl },
-      fileName: `${info.title}.mp3`,
-      mimetype: 'audio/mpeg',
-      ptt: false,
-      contextInfo: {
-        externalAdReply: {
-          title: info.title,
-          body: `🌴 ᴅᴇsᴄᴀʀɢᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🌳`,
-          thumbnail: thumb,
-          mediaType: 1,
-          renderLargerThumbnail: true
-        }
-      }
-    }, { quoted: m });
-
-    await m.react('✅');
-  } catch (e) {
-    console.error('[SPOTIFY ERROR]', e);
-    await m.reply('❌ Ocurrió un error al procesar la canción de Spotify.');
-    await m.react('❌');
-  }
-};
-
-handler.help = ['music <link>'];
-handler.tags = ['descargas'];
-handler.command = ['music'];
-handler.register = true;
-handler.limit = 2;
-
-export default handler;*/
-
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, args, command, usedPrefix }) => {
   const text = args.join(" ");
   if (!text) {
     return m.reply(
-      `╭━━〔 *🔊 Reproductor de Música* 〕━━⬣
-┃ ✨ *Uso correcto del comando:*
-┃ ➤ ${usedPrefix}${command} shakira soltera
-╰━━━━━━━━━━━━━━━━━━⬣`
+      `┌──〔 📀 𝙈𝙊𝘿𝙊 𝙎𝙐𝙆𝙐𝙉𝘼 〕──┐
+│ ⚠️ 𝙐𝙎𝙊 𝘾𝙊𝙍𝙍𝙀𝘾𝙏𝙊:
+│ ${usedPrefix}${command} shakira soltera
+└──────────────────────┘`
     );
   }
 
-  await m.react('🎧');
+  await m.react('💻');
+
+  await m.reply(
+    `┌──〔 🔍 𝙎𝙐𝘽𝙎𝙔𝙎𝙏𝙀𝙈 𝘼𝘾𝙏𝙄𝙑𝙀 〕──┐
+│ 📡 Buscando en redes oscuras . . .
+│ 💾 Término: ${text}
+│ ⏳ Descifrando resultados...
+└────────────────────────────┘`
+  );
 
   try {
     const res = await fetch(`https://api.nekorinn.my.id/downloader/spotifyplay?q=${encodeURIComponent(text)}`);
@@ -77,9 +27,10 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     if (!json.status || !json.result?.downloadUrl) {
       return m.reply(
-        `╭━━〔 *🔍 Resultado no encontrado* 〕━━⬣
-┃ ❌ *No se encontró nada para:* ${text}
-╰━━━━━━━━━━━━━━━━━━⬣`
+        `┌──〔 ❌ 𝙀𝙍𝙍𝙊𝙍 𝟰𝟬𝟰 〕──┐
+│ 🔎 No se encontró nada para:
+│ "${text}"
+└──────────────────────┘`
       );
     }
 
@@ -88,13 +39,21 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
 
     await conn.sendMessage(m.chat, {
       image: { url: cover },
-      caption: `╭━━〔 *🎶 Detalles de la Canción* 〕━━⬣
-┃ 🏷️ *Título:* ${title}
-┃ 🎤 *Artista:* ${artist}
-┃ ⏱️ *Duración:* ${duration}
-┃ 🌐 *Spotify:* ${url}
-╰━━━━━━━━━━━━━━━━━━⬣`
+      caption: 
+`┌─〔 🎼 𝙈𝙀𝙏𝘼𝘿𝘼𝙏𝘼 𝘿𝙀 𝙇𝘼 𝘾𝘼𝙉𝘾𝙄Ó𝙉 〕─┐
+│ 🧬 𝙏𝙞́𝙩𝙪𝙡𝙤: ${title}
+│ 🎙️ 𝘼𝙧𝙩𝙞𝙨𝙩𝙖: ${artist}
+│ ⏱️ 𝘿𝙪𝙧𝙖𝙘𝙞ó𝙣: ${duration}
+│ 🌐 𝙎𝙥𝙤𝙩𝙞𝙛𝙮: ${url}
+└────〔 🌳 𝙎𝙪𝙠𝙪𝙣𝙖_𝙎𝙮𝙨𝙩𝙚𝙢.exe 〕────┘`
     }, { quoted: m });
+
+    await m.reply(
+      `📥 𝗗𝗘𝗦𝗖𝗔𝗥𝗚𝗔 𝗘𝗡 𝗖𝗨𝗥𝗦𝗢...
+> [▰▰▰▰▰▱▱▱▱▱] 50%
+> Archivo: 🎧 ${title}
+> Espera unos segundos...`
+    );
 
     await conn.sendMessage(m.chat, {
       audio: { url: audio },
@@ -104,7 +63,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: '🌟 ᴅᴇsᴄᴀʀɢᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🎶',
+          body: '🌌 ᴅᴇsᴄᴀʀɴᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🔊',
           thumbnailUrl: cover,
           mediaType: 1,
           renderLargerThumbnail: true,
@@ -118,17 +77,16 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
   } catch (e) {
     console.error(e);
     return m.reply(
-      `╭━━〔 *⚠️ Error inesperado* 〕━━⬣
-┃ Ocurrió un problema al procesar tu solicitud.
-┃ Por favor, intenta más tarde.
-╰━━━━━━━━━━━━━━━━━━⬣`
+      `┌──〔 ❌ 𝙀𝙍𝙍𝙊𝙍 𝙎𝙄𝙎𝙏𝙀𝙈𝘼 〕──┐
+│ ⚠️ Ocurrió un fallo inesperado.
+│ 📄 Detalles en consola.
+│ 🔁 Intenta de nuevo más tarde.
+└────〔 💀 𝙎𝙪𝙠𝙪𝙣𝙖_𝙁𝘼𝙄𝙇.𝙙𝙢𝙥 〕────┘`
     );
   }
 };
 
-
-handler.command = /^((music|song|playmusic|spotify))$/i;
-
+handler.command = ['music'];
 handler.help = ['music <nombre>'];
 handler.tags = ['descargas'];
 handler.register = true;
