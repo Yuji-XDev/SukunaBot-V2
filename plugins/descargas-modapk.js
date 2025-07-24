@@ -1,4 +1,5 @@
 import { search, download } from 'aptoide-scraper';
+import axios from 'axios';
 
 var handler = async (m, { conn, usedPrefix, command, text }) => {
   if (!text) return conn.reply(m.chat, `❗ Por favor, ingrese el nombre de la apk para descargarla.`, m, rcanal);
@@ -26,12 +27,14 @@ var handler = async (m, { conn, usedPrefix, command, text }) => {
 
     const caption = `*${data5.name}*\n> ${club}`;
 
+    const thumbBuffer = (await axios.get(data5.icon, { responseType: 'arraybuffer' })).data;
+
     await conn.sendMessage(m.chat, {
       document: { url: data5.dllink },
       fileName: `${data5.name}.apk`,
       mimetype: 'application/vnd.android.package-archive',
       caption,
-      thumbnail: data5.icon,
+      thumbnail: thumbBuffer,
       contextInfo: {
         externalAdReply: {
           title: data5.name,
