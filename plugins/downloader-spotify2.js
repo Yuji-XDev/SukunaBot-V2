@@ -1,4 +1,4 @@
-i/*mport fetch from 'node-fetch';
+/*mport fetch from 'node-fetch';
 
 const handler = async (m, { conn, text, command }) => {
   if (!text || !text.includes('spotify.com')) {
