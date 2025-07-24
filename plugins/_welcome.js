@@ -82,9 +82,6 @@ export async function before(m, { conn, participants, groupMetadata }) {
     m.messageStubType == WAMessageStubType.GROUP_PARTICIPANT_LEAVE
   ) groupSize--;
 
-  const dev = null;
-  const redes = null;
-
   if (chat?.welcome && m.messageStubType == 27) {
     let bienvenida = `⌬ ──[ 𝙉𝙐𝙀𝙑𝙊 𝙉𝙊𝘿𝙊 𝘾𝙊𝙉𝙀𝘾𝙏𝘼𝘿𝙊 ]── ⌬
 
