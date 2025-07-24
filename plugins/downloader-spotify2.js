@@ -40,12 +40,12 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
     await conn.sendMessage(m.chat, {
       image: { url: cover },
       caption: 
-`┌─〔 🎼 𝙈𝙀𝙏𝘼𝘿𝘼𝙏𝘼 𝘿𝙀 𝙇𝘼 𝘾𝘼𝙉𝘾𝙄Ó𝙉 〕─┐
+`┌─〔 𝙈𝙀𝙏𝘼𝘿𝘼𝙏𝘼 𝘿𝙀 𝙇𝘼 𝘾𝘼𝙉𝘾𝙄Ó𝙉 〕─┐
 │ 🧬 𝙏𝙞́𝙩𝙪𝙡𝙤: ${title}
 │ 🎙️ 𝘼𝙧𝙩𝙞𝙨𝙩𝙖: ${artist}
 │ ⏱️ 𝘿𝙪𝙧𝙖𝙘𝙞ó𝙣: ${duration}
 │ 🌐 𝙎𝙥𝙤𝙩𝙞𝙛𝙮: ${url}
-└────〔 🌳 𝙎𝙪𝙠𝙪𝙣𝙖_𝙎𝙮𝙨𝙩𝙚𝙢.exe 〕────┘`
+└────〔 𝙎𝙪𝙠𝙪𝙣𝙖_𝙎𝙮𝙨𝙩𝙚𝙢 🌳〕────┘`
     }, { quoted: m });
 
     await m.reply(
@@ -63,7 +63,7 @@ let handler = async (m, { conn, args, command, usedPrefix }) => {
       contextInfo: {
         externalAdReply: {
           title: title,
-          body: '🌌 ᴅᴇsᴄᴀʀɴᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🔊',
+          body: '🌌 ᴅᴇsᴄᴀʀgᴀ ᴄᴏᴍᴘʟᴇᴛᴀ 🔊',
           thumbnailUrl: cover,
           mediaType: 1,
           renderLargerThumbnail: true,
