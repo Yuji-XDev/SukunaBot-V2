@@ -1,31 +1,41 @@
 import fetch from 'node-fetch';
 
-let handler = async (m, { conn, command, usedPrefix, text }) => {
-  const query = text || 'Minecraft';
-  const url = `https://api.dorratz.com/v2/wallpaper-s?q=${encodeURIComponent(query)}`;
+let handler = async (m, { conn, text, usedPrefix, command }) => {
+  if (!text) {
+    return m.reply(`╭━━〔 *🌌 Fondos Disponibles* 〕━━⬣
+┃ ✨ Escribe el tipo de fondo que deseas:
+┃ 🏎️ *autos*
+┃ 👧 *waifu*
+┃ 🚀 *space*
+┃ 📱 *tecnologia*
+┃
+┃ ✨ Ejemplo de uso:
+┃ ➤ ${usedPrefix + command} autos
+╰━━━━━━━━━━━━━━━━━━⬣`);
+  }
 
   try {
-    const res = await fetch(url);
-    const json = await res.json();
+    const res = await fetch(`https://dark-core-api.vercel.app/api/imagenes?query=${encodeURIComponent(text)}`);
+    const data = await res.json();
 
-    if (!json || !json.result || json.result.length === 0)
-      return m.reply(`❗ No se encontraron resultados para: *${query}*`);
-
-    const images = json.result.slice(0, 10);
-
-    for (let img of images) {
-      await conn.sendFile(m.chat, img, 'wallpaper.jpg', `🖼️ *Wallpaper:* ${query}`, m);
-      await new Promise(resolve => setTimeout(resolve, 1500)); 
+    if (!data || !data.result || data.result.length === 0) {
+      return m.reply(`❌ No se encontraron imágenes para: *${text}*`);
     }
 
+    let max = 10;
+    let resultados = data.result.slice(0, max);
+
+    for (let img of resultados) {
+      await conn.sendFile(m.chat, img, 'fondo.jpg', `🖼️ *Fondo - ${text}*`, m);
+    }
   } catch (e) {
     console.error(e);
-    m.reply('⚠️ Hubo un error al obtener los wallpapers. Intenta nuevamente más tarde.');
+    m.reply('❌ Ocurrió un error al obtener las imágenes. Intenta de nuevo más tarde.');
   }
 };
 
-handler.help = ['wallpaper <tema>'];
-handler.tags = ['internet'];
-handler.command = /^wallpaper$/i;
+handler.command = /^fondo$/i;
+handler.help = ['fondo <categoría>'];
+handler.tags = ['imagenes'];
 
 export default handler;
