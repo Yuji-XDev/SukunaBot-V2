@@ -48,40 +48,44 @@ export async function before(m, { conn, participants, groupMetadata }) {
   let pp = await conn.profilePictureUrl(m.messageStubParameters[0], 'image').catch(_ => 'https://files.catbox.moe/04u4qi.jpg');
   let img = await (await fetch(`${pp}`)).buffer();
   let chat = global.db.data.chats[m.chat];
-  let txt = `🗙🖫︎⟆ 𝗕 𝗜 𝗘 𝗡 𝗩 𝗘 𝗡 𝗜 𝗗 𝗢⟆🗙🖫︎`;
-  let txt1 = `🗙🖫︎⟆ 𝗔 𝗗 𝗜 𝗢 𝗦 ⟆🗙🖫`;
+  let title = `▧▧▧ 𝚆𝙴𝙻𝙲𝙾𝙼𝙴 :: SYSTEM ONLINE ▧▧▧`;
+  let title1 = `▧▧▧ 𝙎𝙃𝙐𝙏𝙏𝙄𝙉𝙂 𝘿𝙊𝙒𝙉 :: USER LEFT ▧▧▧`;
   let groupSize = participants.length;
   if (m.messageStubType == 27) groupSize++;
   else if (m.messageStubType == 28 || m.messageStubType == 32) groupSize--;
 
   if (chat.welcome && m.messageStubType == 27) {
-    let bienvenida = `╭┈ ↷
-│ ✐ ❮ 🌴 \`𝐖ᥱᥣᥴ᥆mᥱ\` 🌾  ❯
-│ 🪷 *Usᴜᴀʀɪᴏ ▷* @${m.messageStubParameters[0].split`@`[0]}
-│ 🎓 *Mɪᴇᴍʙʀᴏs:* ${groupSize}
-│ 🧭 *Pᴀɪs:* ${pais}
-│ 📜 *Fᴇᴄʜᴀ:* ${fecha}
-│ 🕊️ *Hᴏʀᴀ:* ${hora}
-│ 👻 *Gʀᴜᴘᴏ:*
-│ ≡ ${groupMetadata.subject}
-╰̇╌̣╌̇╌̣━̇━̣╴╴╴╴╴╴╴╴╴╴̣━̇━̣╌̇╌̣╌̇
+    let bienvenida = `⌬ ──[ 𝙉𝙐𝙀𝙑𝙊 𝙉𝙊𝘿𝙊 𝘾𝙊𝙉𝙀𝘾𝙏𝘼𝘿𝙊 ]── ⌬
 
+╭╼⃝🌸✦ 𝑾𝒆𝒍𝒄𝒐𝒎𝒆 𝑵𝒚𝒂~ ✦🌸╾⃝╮
+┃
+┃ 🐾 *Nᴜᴇᴠ@:* @${m.messageStubParameters[0].split`@`[0]}
+┃ 🎀 *𝙐𝙨𝙚𝙧𝙨 𝙘𝙤𝙣𝙚𝙘𝙩𝙖𝙙𝙤𝙨:* ${groupSize}
+┃ 🗺️ *𝙇𝙤𝙘𝙖𝙡𝙞𝙯𝙖𝙘𝙞𝙤́𝙣:* ${pais}
+┃ 📆 *𝙏𝙞𝙢𝙚𝙨𝙩𝙖𝙢𝙥:* ${fecha} • ${hora}
+┃ 🏰 *𝙂𝙧𝙪𝙥𝙤 𝙙𝙚 𝙙𝙚𝙨𝙥𝙡𝙞𝙚𝙜𝙪𝙚:* ${groupMetadata.subject}
+┃
+╰━･ﾟ✧*:･ﾟ✿🌸✧ﾟ･:✿･ﾟ✧━╯
+
+💌 *¡Bienvenid@! Siéntete como en casa~*
 > 🛠 \`\`\`ᴜsᴀ #ᴍᴇɴᴜ ᴘᴀʀᴀ ᴠᴇʀ ʟᴏs ᴄᴏᴍᴀɴᴅᴏs ᴅɪsᴘᴏɴɪʙʟᴇs.\`\`\``;
 
     await conn.sendMini(m.chat, txt, dev, bienvenida, img, img, redes, fkontak);
   }
 
   if (chat.welcome && (m.messageStubType == 28 || m.messageStubType == 32)) {
-    let bye = `           *↷❮ 🎭 𝐀𝐃𝐈Ó𝐒 🎭 ❯*
-🎯 𝐔sᥙᥲrі᥆ ⑄▷@${m.messageStubParameters[0].split`@`[0]}*
-🧮 𝐌іᥱmᑲr᥆s : ${groupSize}
-🗺️ 𝐏ᥲís : ${pais}
-📆 𝐅ᥱᥴһᥲ : ${fecha}
-🕒 𝐇᥆rᥲ : ${hora}
-🏷️ 𝐆rᥙ⍴᥆ : ${groupMetadata.subject}
+    let bye = `╭─⃟🌹❖ 𝐃𝐄𝐒𝐏𝐈𝐃𝐈𝐄𝐍𝐃𝐎𝐒 ❖🌹⃟─╮
+┃
+┃ 💔 *Se ha ido:* @${m.messageStubParameters[0].split`@`[0]}
+┃ 👥 *Miembros restantes:* ${groupSize}
+┃ 🌐 *País:* ${pais}
+┃ 🗓️ *Fecha:* ${fecha}
+┃ 🕰️ *Hora Peru:* ${hora}
+┃ 🏡 *Grupo:* ${groupMetadata.subject}
+┃
+╰─────────────✦
 
-*${global.welcom2}*
-
+🕊️ *Que los vientos te lleven a nuevos destinos...*
 > 🛠 \`\`\`ᴜsᴀ #ᴍᴇɴᴜ ᴘᴀʀᴀ ᴠᴇʀ ʟᴏs ᴄᴏᴍᴀɴᴅᴏs ᴅɪsᴘᴏɴɪʙʟᴇs.\`\`\``;
 
     await conn.sendMini(m.chat, txt1, dev, bye, img, img, redes, fkontak);
