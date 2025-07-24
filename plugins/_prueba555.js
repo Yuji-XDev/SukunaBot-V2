@@ -1,42 +1,47 @@
 import fetch from 'node-fetch';
 
 let handler = async (m, { conn, args, usedPrefix, command }) => {
-  const domain = args[0];
-
-  if (!domain) {
-    return m.reply(`❗ *Debes proporcionar un dominio*\n\nEjemplo:\n${usedPrefix + command} github.com`);
+  const url = args[0];
+  if (!url || !url.includes('spotify.com/album')) {
+    return m.reply(`╭───〔 *📀 Descargador Spotify Álbum* 〕───⬣
+┃ ✦ *Ejemplo:*
+┃ ${usedPrefix + command} https://open.spotify.com/album/22DL6IRGNYNenKej7aw8pO
+╰━━━━━━━━━━━━━━━━━━⬣`);
   }
 
   try {
-    const res = await fetch(`https://api.eliasaryt.pro/api/resolvedns?domain=${domain}`);
+    const res = await fetch(`https://delirius-apiofc.vercel.app/download/spotifyalbum?url=${url}`);
+    if (!res.ok) throw '❌ Error al obtener datos del álbum.';
+    
     const json = await res.json();
+    if (!json.estado || !json.datos) throw '⚠️ Álbum no encontrado o datos incompletos.';
 
-    if (json.Estado !== 0) {
-      return m.reply(`❌ Error al resolver el dominio.`);
-    }
+    const datos = json.datos;
+    const pistas = json.pistas || [];
 
-    let respuesta = json.Respuesta?.map(r => `🌐 *IP:* ${r.datos}\n📦 *TTL:* ${r.TTL}`).join("\n\n") || "Sin respuesta DNS.";
+    let texto = `╭━━〔 *🎧 SPOTIFY ÁLBUM* 〕━━⬣
+┃ 📀 *Nombre:* ${datos.nombre}
+┃ 📅 *Publicado:* ${datos.publicar}
+┃ 💿 *Total de pistas:* ${datos.total_pistas}
+┃ 🏷 *Derechos:* ${datos['derechos de autor']}
+┃ 🔗 *Enlace:* ${datos.enlace}
+╰━━━━━━━━━━━━━━━━━━⬣\n\n`;
 
-    let texto = `╭━━〔 *🔍 DNS Lookup* 〕━━⬣
-┃ 🧿 *Dominio:* ${domain}
-┃ 📥 *Resuelto:* ${json.RD ? 'Sí' : 'No'}
-┃ 📡 *Recursivo:* ${json.RA ? 'Sí' : 'No'}
-┃ 💬 *Comentario:* ${json.Comentario}
-┃ 👤 *API:* ${json.Creador}
-╰━━─⊰
+    texto += `╭───〔 *📝 Lista de Canciones* 〕───⬣\n`;
+    pistas.forEach((track, index) => {
+      texto += `┃ ${index + 1}. ${track.nombre} (${track.duracion})\n`;
+    });
+    texto += `╰━━━━━━━━━━━━━━━━━━⬣`;
 
-${respuesta}
-`;
-
-    await m.reply(texto);
+    await conn.sendFile(m.chat, datos.imagen, 'cover.jpg', texto, m);
   } catch (e) {
     console.error(e);
-    m.reply('⚠️ Error al obtener los datos. Intenta más tarde.');
+    m.reply('❌ Ocurrió un error al obtener la información del álbum.');
   }
 };
 
-handler.help = ['dnslookup <dominio>'];
-handler.tags = ['tools'];
-handler.command = ['dnslookup', 'resolvedns'];
+handler.command = ['spotifyalbum', 'albumspotify'];
+handler.help = ['spotifyalbum <url>'];
+handler.tags = ['descargas', 'spotify'];
 
 export default handler;
