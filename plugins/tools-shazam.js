@@ -23,7 +23,7 @@ let handler = async (m, { conn, command, usedPrefix }) => {
   const mime = (q.msg || q).mimetype || q.mediaType || '';
 
   if (!/audio|video/.test(mime)) {
-    return conn.reply(m.chat, `🎧 *Responde a un audio o video para reconocer la música.*\n\nEjemplo:\n${usedPrefix + command}`, m, fake);
+    return conn.reply(m.chat, `🎧 *Responde a un audio o video para reconocer la música.*`, m, fake);
   }
 
   try {
@@ -80,9 +80,10 @@ let handler = async (m, { conn, command, usedPrefix }) => {
 ┃ 📀 *Género:* ${genres}
 ┃ 🗓 *Lanzamiento:* ${release}
 ┃ ⏱ *Duración:* ${duration}
+┃
 ┃ 🔗 *YouTube:* ${youtubeUrl || 'No encontrado'}
 ┃ 🔗 *Spotify:* ${spotifyUrl || 'No encontrado'}
-╰━━━━━━━━━━━━━━━━━━━━⬣
+╰━━━━━━━━━━━━━━━━━━━━⬣┃
 `.trim();
 
     await conn.sendMessage(m.chat, {
@@ -109,12 +110,12 @@ let handler = async (m, { conn, command, usedPrefix }) => {
           type: 1
         }
       ],
-      footer: '🎶 WhatMusic by Black.OFC'
+      footer: '🌾 Powered By Dev.Shadow 🌳'
     }, { quoted: m });
 
   } catch (err) {
     console.error('[❌ WHATMUSIC ERROR]:', err);
-    await conn.reply(m.chat, `❌ *No se pudo reconocer la música.*\n\n💡 Asegúrate de enviar un audio de buena calidad y mínimo 10s.\n\n🔁 *Error:* ${err}`, m);
+    await conn.reply(m.chat, `❌ *No se pudo reconocer la música.*\n\n💡 Asegúrate de enviar un audio de buena calidad y mínimo 10s.\n\n🔁 *Error:* ${err}`, m, fake);
   }
 };
 
