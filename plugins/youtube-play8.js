@@ -97,7 +97,7 @@ const caption = `*🌳  YOUTUBE PLAY 🎬*
           type: 1,
         },
         {
-          buttonId: `${usedPrefix}ytmp4 ${video.url}`,
+          buttonId: `${usedPrefix}ytv ${video.url}`,
           buttonText: { displayText: '🌾 𝑫𝒆𝒔𝒄𝒂𝒓𝒈𝒂𝒓 𝑽𝒊𝒅𝒆𝒐' },
           type: 1,
         },
