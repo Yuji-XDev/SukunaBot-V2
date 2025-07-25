@@ -34,7 +34,8 @@ const handler = async (m, { conn, text, command }) => {
 
     await conn.sendFile(m.chat, thumbnailBuffer, 'ytmp3.jpg', textoInfo, m);
 
-    const api = `https://api.stellarwa.xyz/dow/ytmp3?url=${url}&apikey=stellar-7SQpl4Ah`;
+    //const api = `https://api.stellarwa.xyz/dow/ytmp3?url=${url}&apikey=stellar-7SQpl4Ah`;
+    const api = `https://dark-core-api.vercel.app/api/download/YTMP3?key=api&url=${encodeURIComponent(text)}`;
     const res = await fetch(api);
     const json = await res.json();
 
